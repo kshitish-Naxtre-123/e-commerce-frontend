@@ -71,6 +71,6 @@ button:focus-visible {
 @tailwind components;
 @tailwind utilities;
 
-body{
-background-color: honeydew;
+body {
+  background-color: white;
 }

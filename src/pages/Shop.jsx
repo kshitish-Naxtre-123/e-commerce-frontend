@@ -82,9 +82,9 @@ const Shop = () => {
 
   return (
     <>
-      <div className="container mx-auto ml-[100px] overflow-x-hidden w-[100vw]">
+      <div className="container w-screen">
         {/* <div className="flex md:flex-row  overflow-y-hidden"> */}
-        <div className=" bg-[#2b3751] p-3 mt-2 mb-2  border rounded-lg h-[95vh] fixed  overflow-y-auto">
+        <div className=" bg-[#2b3751] p-3 mt-2 mb-2  border rounded-lg h-[95vh] ml-[80px] fixed  overflow-y-auto">
           <h2 className="h4 text-center py-2 bg-slate-200 rounded-full mb-2 hover:cursor-pointer ">
             Filter by Categories
           </h2>
@@ -164,16 +164,21 @@ const Shop = () => {
 
         {/* <div className=" pl-2 pb-2 ml-[17rem] overflow-x-hidden overflow-y-auto"> */}
         {/* <h2 className="h4 text-center mb-2 font-poppins font-bold text-xl">{products?.length} Products</h2> */}
-        <div className="flex pl-2 pb-2 flex-wrap ml-[17rem] w-[90vw]">
-          {products.length === 0 ? (
-            <Loader />
-          ) : (
-            products?.map((p) => (
-              <div className="p-3" key={p._id}>
-                <ProductCard p={p} />
+        {/* <div className="flex pl-2 pb-2 flex-wrap ml-[17rem] w-[90vw]"> */}
+        <div className="w-screen flex justify-end">
+          <div className="w-8/12 grid sm:grid-cols-2 md:grid-cols-3">
+            {products.length === 0 ? (
+              <div className="flex w-full h-full items-center justify-center">
+                <Loader />
               </div>
-            ))
-          )}
+            ) : (
+              products?.map((p) => (
+                <div className="p-3" key={p._id}>
+                  <ProductCard p={p} />
+                </div>
+              ))
+            )}
+          </div>
         </div>
         {/* </div> */}
         {/* </div> */}

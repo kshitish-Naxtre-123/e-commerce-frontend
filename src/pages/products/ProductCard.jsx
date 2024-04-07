@@ -25,7 +25,7 @@ const ProductCard = ({ p }) => {
   const navigate = useNavigate();
 
   return (
-    <div className=" overflow-x-hidden p-1 transition ease-in-out delay-150  hover:-translate-y-1 hover:scale-105  duration-300">
+    <div className="overflow-x-hidden p-1 transition ease-in-out delay-150  hover:-translate-y-1 hover:scale-105  duration-300">
       <Card
         sx={{
           maxWidth: 345,
@@ -50,7 +50,7 @@ const ProductCard = ({ p }) => {
           alt="Paella dish"
           onClick={() => navigate(`/product/${p._id}`)}
         />
-        <CardContent>
+        <CardContent style={{ padding: "5px" }}>
           <h5
             className="mb-2 text-xl text-black dark:text-black font-poppins font-semibold"
             onClick={() => navigate(`/product/${p._id}`)}

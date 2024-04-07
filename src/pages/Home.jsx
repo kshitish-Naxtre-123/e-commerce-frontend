@@ -11,10 +11,15 @@ const Home = () => {
   const { keyword } = useParams();
   const { data, isLoading, isError } = useGetProductsQuery({ keyword });
   return (
-    <>
+    <section className="w-full flex flex-col">
       {/* <ProductCarousel /> */}
 
-      {!keyword ?<div className=" ml-[6rem] h-[100vh]"> <Header /></div> : null}
+      {!keyword ? (
+        <div className="w-full flex items-center justify-center mx-auto">
+          {" "}
+          <Header />
+        </div>
+      ) : null}
       {isLoading ? (
         <Loader />
       ) : isError ? (
@@ -22,15 +27,14 @@ const Home = () => {
           {isError?.data?.message || isError?.error || "An error occurred"}
         </Message>
       ) : (
-        <>
-          <div className="flex justify-between items-center">
-            <h1 className=" font-poppins font-bold ml-[6.5rem] mt-[28rem] text-[3rem]">
+        <div>
+          <div className="flex justify-between items-center mx-20 mt-20">
+            <h1 className="font-poppins font-bold text-[3rem]">
               Special Products
             </h1>
-
             <Link
               to="/shop"
-              className="bg-pink-600 font-bold rounded-md py-2 px-10 mr-12 mt-[28rem] text-white"
+              className="bg-pink-600 font-bold rounded-md py-2 px-10 text-white"
             >
               Shop
             </Link>
@@ -45,9 +49,9 @@ const Home = () => {
               ))}
             </div>
           </div>
-        </>
+        </div>
       )}
-    </>
+    </section>
   );
 };
 

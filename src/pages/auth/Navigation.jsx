@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import "./Navigation.css";
-import {
-  AiOutlineLogin,
-  AiOutlineUserAdd,
-} from "react-icons/ai";
+import { AiOutlineLogin, AiOutlineUserAdd } from "react-icons/ai";
 import { AiFillHome } from "react-icons/ai";
 import { HiShoppingBag } from "react-icons/hi2";
 import { FaShoppingCart } from "react-icons/fa";
@@ -26,33 +23,34 @@ function Navigation() {
   const [showSidebar, setShowSidebar] = useState(false);
 
   const toggleDropdown = () => {
-    setDropdownOpen(prevState => !prevState);
+    setDropdownOpen((prevState) => !prevState);
   };
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [logoutApiCall] = useLogoutMutation();
+  // const [logoutApiCall] = useLogoutMutation();
 
-  const logoutHandler = async () => {
-    try {
-      await logoutApiCall().unwrap();
-      dispatch(logout());
-      navigate("/login");
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const logoutHandler = async () => {
+  //   try {
+  //     await logoutApiCall().unwrap();
+  //     dispatch(logout());
+  //     navigate("/login");
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <div
-      style={{ zIndex: 9999 }}
+      style={{ zIndex: 40 }}
       className={`${
         showSidebar ? "hidden" : "flex"
-      } xl:flex lg:flex md:hidden sm:hidden flex-col justify-between p-4 text-white bg-[#2b3751] w-[4%] hover:w-[15%] h-[100vh]  fixed border border-r-gray-400 `}
+      } xl:flex lg:flex md:hidden sm:hidden flex-col justify-between pt-24 px-4 text-white 
+      bg-gray-800 w-[4%] hover:w-[15%] h-[100vh]  fixed `}
       id="navigation-container"
     >
-      <div className="flex flex-col justify-cente space-y-1">
+      <div className="flex flex-col justify-center space-y-1">
         <Link
           to="/"
           className="flex items-center text-center transition-transform transform hover:translate-x-2"
@@ -73,16 +71,20 @@ function Navigation() {
           </span>{" "}
         </Link>
 
-        <Link to="/cart" className="flex relative">
-          <div className="flex items-center transition-transform transform hover:translate-x-2 text-center">
-            <FaShoppingCart className="mt-[3rem] mr-2" size={26} color="#ADD8E6" />
-            <span className=" font-poppins  font-bold hidden nav-item-name mt-[3rem]">
-              Cart
-            </span>{" "}
-          </div>
-
+        <Link
+          to="/cart"
+          className="flex items-center text-center transition-transform transform hover:translate-x-2"
+        >
+          <FaShoppingCart
+            className="mt-[3rem] mr-2"
+            size={26}
+            color="#ADD8E6"
+          />
+          <span className=" font-poppins  font-bold hidden nav-item-name mt-[3rem]">
+            Cart
+          </span>{" "}
           <div className="absolute top-10">
-            {cartItems.length > 0 && (
+            {cartItems?.length > 0 && (
               <span>
                 <span className="px-1 py-0 text-sm text-white bg-pink-500 rounded-full">
                   {cartItems.reduce((a, c) => a + c.qty, 0)}
@@ -92,18 +94,19 @@ function Navigation() {
           </div>
         </Link>
 
-        <Link to="/favorite" className="flex relative">
-          <div className="flex justify-center items-center transition-transform transform hover:translate-x-2">
-            <FaHeart className="mt-[3rem] mr-2" size={20} color="#ffb6c1"/>
-            <span className=" font-poppins  font-bold hidden nav-item-name mt-[3rem]">
-              Favorites
-            </span>{" "}
-            <FavouritesCount />
-          </div>
+        <Link
+          to="/favorite"
+          className="flex items-center text-center transition-transform transform hover:translate-x-2"
+        >
+          <FaHeart className="mt-[3rem] mr-2" size={20} color="#ffb6c1" />
+          <span className=" font-poppins  font-bold hidden nav-item-name mt-[3rem]">
+            Favorites
+          </span>{" "}
+          <FavouritesCount />
         </Link>
       </div>
 
-      <div className="relative">
+      {/* <div className="relative">
         <button
           onClick={toggleDropdown}
           className="flex items-center text-black focus:outline-none p-5  w-full  justify-between"
@@ -121,7 +124,6 @@ function Navigation() {
             <IoIosArrowDown size={25} className=" ml-3 text-white" />
           )}
         </button>
-      
 
         {dropdownOpen && userInfo && (
           <ul
@@ -135,7 +137,6 @@ function Navigation() {
                   <Link
                     to="/admin/dashboard"
                     className="block px-4 py-2 rounded-md mt-2 hover:bg-[#35e5f1] hover:text-black"
-                    
                   >
                     Dashboard
                   </Link>
@@ -215,7 +216,7 @@ function Navigation() {
             </li>
           </ul>
         )}
-      </div>
+      </div> */}
     </div>
   );
 }

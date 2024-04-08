@@ -9,11 +9,11 @@ function AdminMenu() {
   return (
       <>
         <button
-            className={`${isMenuOpen ? "top-2 right-2":"top-5 right-7"} bg-[#9ad28b] p-2 fixed rounded-lg`}
+            className={`${isMenuOpen ? "top-2 right-2":"top- right-7"} bg-black p-2 fixed rounded-lg`}
             onClick={toogleMenu}
          >
             {isMenuOpen ?(
-                <FaTimes className=' bg-white'/>
+                <FaTimes className=' bg-white mt-6'/>
             ):(
                <>
                   <div className=' w-6 h-0.5 bg-gray-200 my-1'></div>

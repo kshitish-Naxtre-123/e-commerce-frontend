@@ -86,7 +86,6 @@ const ProductDetails = () => {
                 alt={product.name}
                 className=" w-full xl:w-[25rem] xl:h-[30rem] lg:w-[30rem] md:w-[30rem] sm:w-[20rem] mr-[2rem] object-contain "
               />
-              <HeartIcon product={product}/>
             </div>
 
             <div className=" flex flex-col justify-between ml-[5rem]">
@@ -97,7 +96,7 @@ const ProductDetails = () => {
                 {product.description}
               </p>
               <p className=" font-poppins text-3xl my-4 font-extrabold ">
-              ₹{product.price}
+                ₹{product.price}
               </p>
 
               <div className=" flex items-center justify-between w-[20rem]">
@@ -119,9 +118,9 @@ const ProductDetails = () => {
 
                 <div className=" two">
                   <h1 className=" flex items-center mb-6">
-                    <FaStar className="mr-2 text-black" />
+                    <FaStar className="mr-2 text-black " />
                     Ratings:
-                    <span className=" font-bold">{rating}</span>
+                    <span className=" font-bold ">{rating}</span>
                   </h1>
                   <h1 className=" flex items-center mb-6">
                     <FaShoppingCart className=" mr-2 text-black" />
@@ -160,13 +159,16 @@ const ProductDetails = () => {
                 )}
               </div>
 
-              <div className=" btn-container">
+              <div className=" btn-container flex gap-2">
                 <button
                   onClick={addToCartHandler}
                   disabled={product.countInStock === 0}
-                  className=" bg-pink-500 text-black py-2 px-4 rounded-lg mt-4 md:mt-0 font-semibold"
+                  className=" bg-blue-500 text-white py-2 px-4 rounded-lg mt-4 md:mt-0 font-semibold"
                 >
                   Add To Cart
+                </button>
+                <button className=" flex items-center justify-center ml-2 bg-pink-200 text-white py-2 px-4 rounded-lg mt-4 md:mt-0 font-semibold">
+                  <HeartIcon product={product} customClass="text-black" size="21px"  />
                 </button>
               </div>
             </div>

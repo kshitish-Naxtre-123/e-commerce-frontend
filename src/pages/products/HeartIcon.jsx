@@ -12,7 +12,7 @@ import{
     setFavorites
 }from '../../redux/features/favorites/favoriteSlice'
 
-const HeartIcon = ({product}) => {
+const HeartIcon = ({product,customClass,size }) => {
     const dispatch=useDispatch()
     const favourites=useSelector((state)=>state.favourites)||[]
     const isFavourites=favourites.some((p)=>p._id ===product._id)
@@ -37,13 +37,13 @@ const toggleFavourites=()=>{
 
 return (
     <div
-       className='  cursor-pointer'
-       onClick={toggleFavourites}
-    >
+    className={`cursor-pointer ${customClass}`}
+    onClick={toggleFavourites}
+>
     {isFavourites ?(
         <FaHeart className=' text-pink-500'/>
     ):(
-        <FaRegHeart className=' text-black'/>
+        <FaRegHeart size={size}/>
     )}
     </div>
   )

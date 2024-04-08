@@ -5,6 +5,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import moment from "moment";
+import{useNavigate} from 'react-router-dom'
 import {
   FaBox,
   FaClock,
@@ -19,9 +20,10 @@ const contentStyle = {
   textAlign: "center",
   background: "#364d79",
 };
+
 const ProductCarousel = () => {
   const { data: products, isLoading, error } = useGetTopProductsQuery();
-
+const navigate=useNavigate()
   const settings = {
     dots: false,
     infinite: true,
@@ -64,6 +66,7 @@ const ProductCarousel = () => {
                     src={image}
                     alt={name}
                     className=" rounded-lg object-fit w-[250px] h-[350px] ml-3 mt-16"
+                    onClick={()=>navigate(`/product/${_id}`)}
                   />
                   <div className="mt-8  ml-8 flex flex-col ">
                     <h2 className=" ml-5 font-poppins font-bold text-[22px]">
@@ -105,7 +108,7 @@ const ProductCarousel = () => {
                           Quantity: {quantity}
                         </h1>
                         <h1 className="flex items-center mb-4">
-                          <FaBox className="mr-2 text-black" /> In Stock:{" "}
+                          <FaBox className="mr-2 text-white" /> In Stock:{" "}
                           {countInStock}
                         </h1>
                       </div>

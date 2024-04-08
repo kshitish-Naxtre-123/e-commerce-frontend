@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { FaTimes } from 'react-icons/fa'
 import { NavLink } from 'react-router-dom'
+import { HiOutlineMenuAlt3 } from "react-icons/hi";
+
 function AdminMenu() {
     const[isMenuOpen,setIsMenuOpen]=useState(false)
     const toogleMenu=()=>{
@@ -9,21 +11,22 @@ function AdminMenu() {
   return (
       <>
         <button
-            className={`${isMenuOpen ? "top-2 right-2":"top-5 right-7"} bg-[#9ad28b] p-2 fixed rounded-lg`}
+            className={`${isMenuOpen ? "top-16 right-3":"top- right-5"}  p-1 fixed rounded-lg`}
             onClick={toogleMenu}
          >
             {isMenuOpen ?(
-                <FaTimes className=' bg-white'/>
+                <FaTimes className=' bg-white mt-16 mr-3' size={24}/>
             ):(
                <>
+                  {/* <div className=' w-6 h-0.5 bg-gray-200 my-1'></div>
                   <div className=' w-6 h-0.5 bg-gray-200 my-1'></div>
-                  <div className=' w-6 h-0.5 bg-gray-200 my-1'></div>
-                  <div className=' w-6 h-0.5 bg-gray-200 my-1'></div>
+                  <div className=' w-6 h-0.5 bg-gray-200 my-1'></div> */}
+                  <HiOutlineMenuAlt3 size={30} className=" mr-4 mt-8 font-bold"/>
                </>
             )}
         </button>
         {isMenuOpen &&(
-            <section className=' bg-[#151515] p-4 fixed right-7 top-5 border rounded-lg'>
+            <section className=' bg-[#151515] p-4 fixed right-12 top-[10rem] border rounded-lg'>
                 <ul className=' list-none mt-2'>
                     <li>
                         <NavLink

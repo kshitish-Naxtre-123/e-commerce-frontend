@@ -1,11 +1,17 @@
 import React from "react";
-import { useGetTopProductsQuery } from "../redux/api/productApiSlice";
+import {
+  useGetNewProductsQuery,
+  useGetTopProductsQuery,
+} from "../redux/api/productApiSlice";
 import Loader from "./Loader";
 import SmallProduct from "../pages/products/SmallProduct";
 import ProductCarousel from "../pages/products/ProductCarousel";
+import Heading from "./Heading";
 
 const Header = () => {
-  const { data, isLoading, error } = useGetTopProductsQuery();
+  // const { data, isLoading, error } = useGetTopProductsQuery();
+  const { data, isLoading, error } = useGetNewProductsQuery();
+
   // console.log(data)
 
   if (isLoading) {
@@ -21,7 +27,9 @@ const Header = () => {
           <ProductCarousel />
         </div>
         <div className="">
-          <div className="grid md:grid-cols-2 sm:grid-cols-4">
+
+          <Heading title="New Products" subtitle={"Explore Our New Products"} />
+          <div className="grid md:grid-cols-4 sm:grid-cols-4">
             {data.map((product) => (
               <div key={product._id}>
                 <SmallProduct product={product} />

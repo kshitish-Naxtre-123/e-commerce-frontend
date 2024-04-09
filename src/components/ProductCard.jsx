@@ -31,7 +31,7 @@ const ProductCard = ({ product }) => {
               </div>
           </div>
           <div className="leading-7 ">
-            <h2 className="font-semibold">{product.name}</h2>
+            <h2 className="font-semibold">{product.name.substring(0,20)}</h2>
             <h2 className="font-bold">₹{product.price}</h2>
           </div>
         </div>

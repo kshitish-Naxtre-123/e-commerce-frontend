@@ -96,6 +96,12 @@ export const productApiSlice = apiSlice.injectEndpoints({
         body: { checked, radio },
       }),
     }),
+    getRecommendedProducts:builder.query({
+      query:(productId)=>({
+        url:`${PRODUCT_URL}/recom/${productId}`
+      })
+    }),
+   
   }),
 });
 
@@ -113,4 +119,5 @@ export const {
   useGetNewProductsQuery,
   useGetOurProductQuery,
   useGetFilteredProductsQuery,
+  useGetRecommendedProductsQuery,
 } = productApiSlice;

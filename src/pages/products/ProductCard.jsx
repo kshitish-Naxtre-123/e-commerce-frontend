@@ -1,4 +1,4 @@
-import { AiOutlineShoppingCart } from "react-icons/ai";
+import { FaShoppingCart } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../redux/features/cart/cartSlice";
 import { toast } from "react-toastify";
@@ -50,7 +50,7 @@ const ProductCard = ({ p }) => {
           alt="Paella dish"
           onClick={() => navigate(`/product/${p._id}`)}
         />
-        <CardContent style={{ padding: "5px" }}>
+        <CardContent style={{ padding: "10px" }}>
           <h5
             className="mb-2 text-xl text-black dark:text-black font-poppins font-semibold"
             onClick={() => navigate(`/product/${p._id}`)}
@@ -60,6 +60,10 @@ const ProductCard = ({ p }) => {
 
           <Typography
             className="text-black font-bold font-poppins text-md"
+            style={{
+              fontSize: "18px", 
+              fontWeight: "600" 
+            }}
             onClick={() => navigate(`/product/${p._id}`)}
           >
             {p?.price?.toLocaleString("en-US", {
@@ -79,7 +83,7 @@ const ProductCard = ({ p }) => {
             <HeartIcon product={p} />
           </IconButton>
           <IconButton aria-label="cart" onClick={() => addToCartHandler(p, 1)}>
-            <AiOutlineShoppingCart size={25} color="black" />
+            <FaShoppingCart size={25} className=" text-gray-400" />
           </IconButton>
         </CardActions>
       </Card>

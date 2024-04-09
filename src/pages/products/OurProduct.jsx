@@ -19,7 +19,7 @@ const OurProduct = () => {
     <div>
       <div className=" container">
         <Heading title="Our Products" subtitle={"Explore Our Products"} />
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 ">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 ">
         {data.map((product) => (
           <ProductCard key={product._id} product={product} />
         ))}

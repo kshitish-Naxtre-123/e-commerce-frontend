@@ -16,7 +16,10 @@ const Cart = () => {
     dispatch(addToCart({ ...product, qty }));
   };
   const removeFromCartHandler = (id) => {
-    dispatch(removeFromCart(id));
+    if(window.confirm("Are you sure")){
+      dispatch(removeFromCart(id));
+
+    }
   };
   const checkHandler = () => {
     navigate("/login?redirect=/shipping");
@@ -44,14 +47,14 @@ const Cart = () => {
           </div>
         ) : (
           <>
-            <div className=" flex flex-col w-[80%]">
-              <h1 className=" text-2xl font-semibold mb-4">Shopping cart</h1>
+            <div className=" flex flex-col w-[80%] font-poppins">
+              <h1 className=" text-2xl font-semibold mb-8 hover:underline">Shopping cart</h1>
               {cartItems?.map((item) => (
                 <div
                   key={item._id}
                   className=" flex items-center mb-[1rem] pb-2"
                 >
-                  <div className=" w-[5rem] h-[5rem]">
+                  <div className=" w-[8rem] h-[8rem]">
                     <img
                       src={item.image}
                       alt={item.name}
@@ -62,11 +65,11 @@ const Cart = () => {
                   <div className=" flex-1 ml-4">
                     <Link
                       to={`/product/${item._id}`}
-                      className=" text-pink-500"
+                      className=" text-black  font-semibold"
                     >
                       {item.name}
                     </Link>
-                    <div className=" mt-2 text-black">{item.brand}</div>
+                    <div className=" mt-2 text-black font-medium">{item.brand}</div>
                     <div className=" mt-2 text-black font-bold">
                       ₹{item.price}
                     </div>

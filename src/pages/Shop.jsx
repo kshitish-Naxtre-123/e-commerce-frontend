@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useGetFilteredProductsQuery } from "../redux/api/productApiSlice";
+import {
+  useGetFilteredProductsQuery,
+} from "../redux/api/productApiSlice";
 import { useFetchCategoriesQuery } from "../redux/api/categoryApiSlice";
-
+import { Button, Dropdown, Checkbox, Input, Space } from "antd";
 import {
   setCategories,
   setProducts,
@@ -10,6 +12,10 @@ import {
 } from "../redux/features/shop/shopSlice";
 import Loader from "../components/Loader";
 import ProductCard from "./products/ProductCard";
+import { TbCategory2 } from "react-icons/tb";
+import { TbBrandDatabricks } from "react-icons/tb";
+import { MdOutlineCurrencyRupee } from "react-icons/md";
+const { Search } = Input;
 
 const Shop = () => {
   const dispatch = useDispatch();
@@ -17,8 +23,25 @@ const Shop = () => {
     (state) => state.shop
   );
 
+  const categoryItems = categories.map((category) => ({
+    key: category._id,
+    label: (
+      <div>
+        <Checkbox onChange={(e) => handleCheck(e.target.checked, category._id)}>
+          {category.name}
+        </Checkbox>
+      </div>
+    ),
+  }));
+
   const categoriesQuery = useFetchCategoriesQuery();
   const [priceFilter, setPriceFilter] = useState("");
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const[filteredData,setFilteredData]=useState([])
+  console.log("products data",products);
+  console.log("search keyword",searchKeyword);
+  console.log("filtered data",filteredData);
+
 
   const filteredProductsQuery = useGetFilteredProductsQuery({
     checked,
@@ -46,9 +69,23 @@ const Shop = () => {
         );
 
         dispatch(setProducts(filteredProducts));
+      } else {
+        // If the filteredProductsQuery is still loading, set the products state to an empty array
+        dispatch(setProducts([]));
       }
     }
   }, [checked, radio, filteredProductsQuery.data, dispatch, priceFilter]);
+
+  useEffect(() => {
+    if (searchKeyword.trim() === "") {
+      setFilteredData(products); 
+    } else {
+      const filteredByName = products.filter((product) =>
+        product.name.toLowerCase().includes(searchKeyword.toLowerCase())
+      );
+      setFilteredData(filteredByName);
+    }
+  }, [searchKeyword, products]);
 
   const handleBrandClick = (brand) => {
     const productsByBrand = filteredProductsQuery.data?.filter(
@@ -64,7 +101,6 @@ const Shop = () => {
     dispatch(setChecked(updatedChecked));
   };
 
-  // Add "All Brands" option to uniqueBrands
   const uniqueBrands = [
     ...Array.from(
       new Set(
@@ -80,45 +116,36 @@ const Shop = () => {
     setPriceFilter(e.target.value);
   };
 
+
   return (
     <>
-      <div className="container w-screen">
-        {/* <div className="flex md:flex-row  overflow-y-hidden"> */}
-        <div className=" bg-[#2b3751] p-3 mt-2 mb-2  border rounded-lg h-[95vh] ml-[80px] fixed  overflow-y-auto">
-          <h2 className="h4 text-center py-2 bg-slate-200 rounded-full mb-2 hover:cursor-pointer ">
-            Filter by Categories
-          </h2>
+      {/* filter product */}
+      <div className=" flex justify-center items-center px-2 py-4 gap-3">
+        <h1 className=" font-poppins font-bold flex items-center justify-center">
+          Filter Products:{" "}
+        </h1>
+        <Dropdown
+          menu={{
+            items: categoryItems,
+          }}
+          placement="bottomLeft"
+          arrow
+        >
+          <Button
+            type="primary"
+            className=" font-poppins font-semibold  text-black shadow-lg transition ease-in-out delay-150  hover:-translate-y-1 hover:scale-100  duration-300 flex justify-center items-center gap-2"
+          >
+            By Catgories
+            <TbCategory2 size={16} />
+          </Button>
+        </Dropdown>
 
-          <div className="p-5 w-[15rem]">
-            {categories?.map((c) => (
-              <div key={c._id} className="mb-2">
-                <div className="flex ietms-center mr-4">
-                  <input
-                    type="checkbox"
-                    id="red-checkbox"
-                    onChange={(e) => handleCheck(e.target.checked, c._id)}
-                    className="w-4 h-4 text-pink-600 bg-gray-100 border-gray-300 rounded focus:ring-pink-500 dark:focus:ring-pink-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
-
-                  <label
-                    htmlFor="pink-checkbox"
-                    className="ml-2 text-sm font-medium text-white dark:text-gray-300"
-                  >
-                    {c.name}
-                  </label>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <h2 className="h4 text-center py-2 bg-slate-200 rounded-full mb-2 hover:cursor-pointer">
-            Filter by Brands
-          </h2>
-
-          <div className="p-5">
-            {uniqueBrands?.map((brand) => (
-              <>
-                <div className="flex items-enter mr-4 mb-5">
+        <Dropdown
+          menu={{
+            items: uniqueBrands?.map((brand) => ({
+              key: brand,
+              label: (
+                <div className="flex items-center">
                   <input
                     type="radio"
                     id={brand}
@@ -126,53 +153,77 @@ const Shop = () => {
                     onChange={() => handleBrandClick(brand)}
                     className="w-4 h-4 text-pink-400 bg-gray-100 border-gray-300 focus:ring-pink-500 dark:focus:ring-pink-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
-
                   <label
-                    htmlFor="pink-radio"
-                    className="ml-2 text-sm font-medium text-white dark:text-gray-300"
+                    htmlFor={brand}
+                    className="ml-2 text-sm font-medium text-black dark:text-gray-300"
                   >
                     {brand}
                   </label>
                 </div>
-              </>
-            ))}
-          </div>
+              ),
+            })),
+          }}
+          placement="bottom"
+          arrow
+        >
+          <Button
+            type="primary"
+            className="font-poppins font-semibold text-black shadow-lg transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-100 duration-300
+            flex justify-center items-center gap-2"
+          >
+            By Brands
+            <TbBrandDatabricks size={16} />
+          </Button>
+        </Dropdown>
 
-          <h2 className="h4 text-center py-2 bg-slate-200 rounded-full mb-2 hover:cursor-pointer">
-            Filer by Price
-          </h2>
+        <Dropdown
+          overlay={
+            <div className="">
+              <Input
+                type="text"
+                placeholder="Enter Price"
+                value={priceFilter}
+                onChange={handlePriceChange}
+                className="  py-2 placeholder-gray-400 border rounded-lg  "
+              />
+            </div>
+          }
+          placement="bottomCenter"
+          arrow
+          input
+        >
+          <Button
+            type="primary"
+            className=" font-poppins font-semibold  text-black shadow-lg transition ease-in-out delay-150  hover:-translate-y-1 hover:scale-100  duration-300 flex justify-center items-center gap-2"
+          >
+            By price
+            <MdOutlineCurrencyRupee size={16} />
+          </Button>
+        </Dropdown>
+        <Button
+          type="danger"
+          className=" font-poppins font-semibold  text-black shadow-lg transition ease-in-out delay-150  hover:-translate-y-1 hover:scale-100  duration-300 hover:bg-red-500 hover:text-white"
+          onClick={() => window.location.reload()}
+        >
+          Reset FIlter
+        </Button>
+        <Input
+        style={{width:"20%",borderRadius:"10px",height:"35px"}}
+        type="text"
+        placeholder="search products here .."
+        onChange={(e)=>setSearchKeyword(e.target.value)}
+        />
+      </div>
 
-          <div className="p-5 w-[15rem]">
-            <input
-              type="text"
-              placeholder="Enter Price"
-              value={priceFilter}
-              onChange={handlePriceChange}
-              className="w-full px-3 py-2 placeholder-gray-400 border rounded-lg focus:outline-none focus:ring focus:border-pink-300"
-            />
-          </div>
-
-          <div className="p-5 pt-0">
-            <button
-              className="w-full border my-4 rounded-md text-white bg-pink-700 text-xl font-bold"
-              onClick={() => window.location.reload()}
-            >
-              Reset
-            </button>
-          </div>
-        </div>
-
-        {/* <div className=" pl-2 pb-2 ml-[17rem] overflow-x-hidden overflow-y-auto"> */}
-        {/* <h2 className="h4 text-center mb-2 font-poppins font-bold text-xl">{products?.length} Products</h2> */}
-        {/* <div className="flex pl-2 pb-2 flex-wrap ml-[17rem] w-[90vw]"> */}
-        <div className="w-screen flex justify-end">
-          <div className="w-8/12 grid sm:grid-cols-2 md:grid-cols-3">
-            {products.length === 0 ? (
+      <div className="w-full flex justify-center">
+        <div className=" ">
+          <div className="w-full grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4">
+            {products?.length === 0 ? (
               <div className="flex w-full h-full items-center justify-center">
                 <Loader />
               </div>
             ) : (
-              products?.map((p) => (
+              filteredData?.map((p) => (
                 <div className="p-3" key={p._id}>
                   <ProductCard p={p} />
                 </div>
@@ -180,8 +231,6 @@ const Shop = () => {
             )}
           </div>
         </div>
-        {/* </div> */}
-        {/* </div> */}
       </div>
     </>
   );

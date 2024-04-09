@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef,useEffect } from "react";
 import { useState } from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
@@ -27,6 +27,20 @@ const TopBar = () => {
       console.log(error);
     }
   };
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownRef]);
 
   return (
     <nav className="z-50 w-full flex items-center justify-between fixed bg-gray-800 text-white px-10 py-7">
@@ -35,7 +49,7 @@ const TopBar = () => {
       
       </div>
       <div className="flex items-center justify-center gap-10">
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-2 items-center" >
           {userInfo?.isadmin && (
             <p className="text-pink-500 font-semibold text-sm">admin:</p>
           )}
@@ -55,7 +69,7 @@ const TopBar = () => {
               />
             ))}
         </div>
-        <div className="relative z-40 top-10">
+        <div className="relative z-40 top-10" ref={dropdownRef}>
           {dropdownOpen && userInfo && (
             <ul
               className={`absolute  bg-gray-800 right-0 mt-2 mr-25 space-y-1 bg-white-400 text-white font-bold border rounded-md px-3 py-3 ${

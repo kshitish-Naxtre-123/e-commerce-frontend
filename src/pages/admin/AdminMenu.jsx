@@ -26,7 +26,7 @@ function AdminMenu() {
             )}
         </button>
         {isMenuOpen &&(
-            <section className=' bg-[#151515] p-4 fixed right-12 top-[10rem] border rounded-lg'>
+            <section className=' bg-[#151515] p-4 fixed right-12 top-[10rem] border rounded-lg z-40'>
                 <ul className=' list-none mt-2'>
                     <li>
                         <NavLink

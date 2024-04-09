@@ -46,8 +46,8 @@ function Navigation() {
       style={{ zIndex: 40 }}
       className={`${
         showSidebar ? "hidden" : "flex"
-      } xl:flex lg:flex md:hidden sm:hidden flex-col justify-between pt-24 px-4 text-white 
-      bg-gray-800 w-[4%] hover:w-[15%] h-[100vh]  fixed `}
+      } xl:flex lg:flex md:flex sm:flex flex-col justify-between pt-24 px-4  text-white 
+      bg-gray-800 w-[4%] hover:w-[15%] md:hover:w-[50%] h-[100vh]  fixed `}
       id="navigation-container"
     >
       <div className="flex flex-col justify-center space-y-1">
@@ -55,7 +55,7 @@ function Navigation() {
           to="/"
           className="flex items-center text-center transition-transform transform hover:translate-x-2"
         >
-          <AiFillHome className="mr-2 mt-[3rem]" size={26} color="90EE90" />
+          <AiFillHome className="mr-2 mt-[3rem] " size={26} color="90EE90" />
           <span className=" font-poppins font-bold hidden nav-item-name mt-[3rem]">
             Home
           </span>{" "}

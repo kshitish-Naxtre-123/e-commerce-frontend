@@ -29,7 +29,7 @@ const Header = () => {
         <div className="">
 
           <Heading title="New Products" subtitle={"Explore Our New Products"} />
-          <div className="grid md:grid-cols-4 sm:grid-cols-4">
+          <div className="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
             {data.map((product) => (
               <div key={product._id}>
                 <SmallProduct product={product} />

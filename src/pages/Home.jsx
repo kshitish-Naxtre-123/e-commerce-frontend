@@ -16,6 +16,7 @@ import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
 import OurProduct from "./products/OurProduct";
 import Services from "../components/Services";
+import Footer from "../components/Footer";
 
 const HeroData = [
   {
@@ -169,7 +170,7 @@ const Home = () => {
       ) : (
         <div>
           <div className="flex justify-between items-center mx-20 mt-20">
-            <h1 className="font-poppins font-bold text-[3rem]">
+            <h1 className="font-poppins font-bold text-[3rem] ml-12">
               Special Products
             </h1>
             <Link
@@ -210,6 +211,11 @@ const Home = () => {
         {/* banner2 */}
         <div>
         <Banner data={BannerData} />
+      </div>
+
+      {/* footer */}
+      <div className=" p-0">
+        <Footer/>
       </div>
     </section>
   );

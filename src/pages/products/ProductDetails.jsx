@@ -5,6 +5,7 @@ import Message from "../../components/Message";
 import {
   useGetProductDetailsQuery,
   useCreateReviewMutation,
+  useGetRecommendedProductsQuery,
 } from "../../redux/api/productApiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -21,8 +22,12 @@ import ProductTabs from "./ProductTabs";
 import { toast } from "react-toastify";
 import { addToCart } from "../../redux/features/cart/cartSlice";
 
+import { Card } from "antd";
+
 const ProductDetails = () => {
   const { id: productId } = useParams();
+  const { data: recommendedProducts, isLoading: loadingRecommendedProducts } =
+    useGetRecommendedProductsQuery(productId);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -60,7 +65,7 @@ const ProductDetails = () => {
     dispatch(addToCart({ ...product, qty }));
     navigate("/cart");
   };
-
+  const { Meta } = Card;
   return (
     <>
       <div>
@@ -168,7 +173,11 @@ const ProductDetails = () => {
                   Add To Cart
                 </button>
                 <button className=" flex items-center justify-center ml-2 bg-pink-200 text-white py-2 px-4 rounded-lg mt-4 md:mt-0 font-semibold">
-                  <HeartIcon product={product} customClass="text-black" size="21px"  />
+                  <HeartIcon
+                    product={product}
+                    customClass="text-black"
+                    size="21px"
+                  />
                 </button>
               </div>
             </div>
@@ -187,6 +196,34 @@ const ProductDetails = () => {
             </div>
           </div>
         </>
+      )}
+
+      {!loadingRecommendedProducts && recommendedProducts && (
+        <div className="container mx-auto">
+          <h2 className="text-xl font-bold mb-12 xl:mt-[5rem]">
+            Recommended Products
+          </h2>
+          <div className="grid grid-cols-5 xl:gap-16">
+            {recommendedProducts.map((product) => (
+              <div key={product._id}>
+                <Card
+                  hoverable
+                  className="w-full object-contain transition ease-in-out delay-150  hover:-translate-y-1 hover:scale-105  duration-300"
+                  cover={<img alt="example" src={product.image} />}
+                  onClick={() => navigate(`/product/${product._id}`)}
+                >
+                  <Meta
+                    title={product.name}
+                    className=" font-poppins font-semibold text-[18px]"
+                  />
+                  <h2 className=" text-[18px] font-poppins font-semibold mt-4">
+                    ${product.price}
+                  </h2>
+                </Card>
+              </div>
+            ))}
+          </div>
+        </div>
       )}
     </>
   );

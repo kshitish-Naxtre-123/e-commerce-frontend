@@ -7,6 +7,7 @@ import Loader from "./Loader";
 import SmallProduct from "../pages/products/SmallProduct";
 import ProductCarousel from "../pages/products/ProductCarousel";
 import Heading from "./Heading";
+import ProductCarcV2 from "./ProductCarcV2";
 
 const Header = () => {
   // const { data, isLoading, error } = useGetTopProductsQuery();
@@ -27,12 +28,11 @@ const Header = () => {
           <ProductCarousel />
         </div>
         <div className="">
-
           <Heading title="New Products" subtitle={"Explore Our New Products"} />
-          <div className="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
+          <div className="w-full grid gap-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
             {data.map((product) => (
               <div key={product._id}>
-                <SmallProduct product={product} />
+                <ProductCarcV2 product={product} />
               </div>
             ))}
           </div>

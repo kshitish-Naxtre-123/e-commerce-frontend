@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  useGetFilteredProductsQuery,
-} from "../redux/api/productApiSlice";
+import { useGetFilteredProductsQuery } from "../redux/api/productApiSlice";
 import { useFetchCategoriesQuery } from "../redux/api/categoryApiSlice";
 import { Button, Dropdown, Checkbox, Input, Space } from "antd";
 import {
@@ -15,6 +13,7 @@ import ProductCard from "./products/ProductCard";
 import { TbCategory2 } from "react-icons/tb";
 import { TbBrandDatabricks } from "react-icons/tb";
 import { MdOutlineCurrencyRupee } from "react-icons/md";
+import ProductCarcV2 from "../components/ProductCarcV2";
 const { Search } = Input;
 
 const Shop = () => {
@@ -37,11 +36,10 @@ const Shop = () => {
   const categoriesQuery = useFetchCategoriesQuery();
   const [priceFilter, setPriceFilter] = useState("");
   const [searchKeyword, setSearchKeyword] = useState("");
-  const[filteredData,setFilteredData]=useState([])
-  console.log("products data",products);
-  console.log("search keyword",searchKeyword);
-  console.log("filtered data",filteredData);
-
+  const [filteredData, setFilteredData] = useState([]);
+  console.log("products data", products);
+  console.log("search keyword", searchKeyword);
+  console.log("filtered data", filteredData);
 
   const filteredProductsQuery = useGetFilteredProductsQuery({
     checked,
@@ -78,7 +76,7 @@ const Shop = () => {
 
   useEffect(() => {
     if (searchKeyword.trim() === "") {
-      setFilteredData(products); 
+      setFilteredData(products);
     } else {
       const filteredByName = products.filter((product) =>
         product.name.toLowerCase().includes(searchKeyword.toLowerCase())
@@ -116,9 +114,8 @@ const Shop = () => {
     setPriceFilter(e.target.value);
   };
 
-
   return (
-    <>
+    <section className="pl-[4%]">
       {/* filter product */}
       <div className=" flex justify-center items-center px-2 py-4 gap-3">
         <h1 className=" font-poppins font-bold flex items-center justify-center">
@@ -208,10 +205,10 @@ const Shop = () => {
           Reset FIlter
         </Button>
         <Input
-        style={{width:"20%",borderRadius:"10px",height:"35px"}}
-        type="text"
-        placeholder="search products here .."
-        onChange={(e)=>setSearchKeyword(e.target.value)}
+          style={{ width: "20%", borderRadius: "10px", height: "35px" }}
+          type="text"
+          placeholder="search products here .."
+          onChange={(e) => setSearchKeyword(e.target.value)}
         />
       </div>
 
@@ -225,14 +222,14 @@ const Shop = () => {
             ) : (
               filteredData?.map((p) => (
                 <div className="p-3" key={p._id}>
-                  <ProductCard p={p} />
+                  <ProductCarcV2 product={p} />
                 </div>
               ))
             )}
           </div>
         </div>
       </div>
-    </>
+    </section>
   );
 };
 

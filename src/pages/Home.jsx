@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import OurProduct from "./products/OurProduct";
 import Services from "../components/Services";
 import Footer from "../components/Footer";
+import ProductCarcV2 from "../components/ProductCarcV2";
 
 const HeroData = [
   {
@@ -78,7 +79,7 @@ const Home = () => {
     AOS.refresh();
   }, []);
   return (
-    <section className="w-full flex flex-col">
+    <section className="w-full flex flex-col pl-[4%]">
       {/* <ProductCarousel /> */}
 
       {/* hero section */}
@@ -182,10 +183,10 @@ const Home = () => {
           </div>
 
           <div>
-            <div className="flex justify-center flex-wrap mt-[2rem] ml-[2rem]">
+            <div className="flex justify-center gap-10 flex-wrap mt-[2rem] ml-[2rem]">
               {data.products.map((product) => (
                 <div key={product._id}>
-                  <Product product={product} />
+                  <ProductCarcV2 product={product} />
                 </div>
               ))}
             </div>
@@ -208,14 +209,14 @@ const Home = () => {
         <Services />
       </div>
 
-        {/* banner2 */}
-        <div>
+      {/* banner2 */}
+      <div>
         <Banner data={BannerData} />
       </div>
 
       {/* footer */}
       <div className=" p-0">
-        <Footer/>
+        <Footer />
       </div>
     </section>
   );

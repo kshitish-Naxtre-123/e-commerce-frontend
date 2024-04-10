@@ -15,6 +15,8 @@ const ratingLabels = {
   4: "Excellent",
   5: "Exceptional",
 };
+const { TextArea } = Input;
+
 const ProductTabs = ({
   loadingProductReview,
   userInfo,
@@ -196,20 +198,39 @@ const ProductTabs = ({
         )}
       </section>
       <Modal
-        title="update Comment"
+        title={
+          <h1 className=" font-poppins font-bold text-[20px] mb-4">
+            Update Comment
+          </h1>
+        }
         centered
         open={isModalOpen}
         onOk={handleUpdateReview}
         onCancel={handleCancel}
         okText="Update"
-        okButtonProps={{ style: { background: "green", borderColor: "green" } }}
+        okButtonProps={{
+          style: {
+            background: "#32de84",
+            borderColor: "green",
+            border: "transparent",
+          },
+        }}
+        className=""
       >
-        <Input
+        <TextArea
+          rows={4}
+          placeholder="maxLength is 6"
+          maxLength={6}
+          className="rounded-md text-black font-poppins text-[14px] "
+          value={updatedComment}
+          onChange={(e) => setUpdatedComment(e.target.value)}
+        />
+        {/* <Input
           placeholder=" enter your comment"
           className="rounded-md "
           value={updatedComment}
           onChange={(e) => setUpdatedComment(e.target.value)}
-        />
+        /> */}
 
         <Select
           defaultValue=""

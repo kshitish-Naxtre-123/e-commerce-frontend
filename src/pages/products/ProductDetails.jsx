@@ -224,7 +224,7 @@ const ProductDetails = () => {
       )}
 
       {!loadingRecommendedProducts && recommendedProducts && (
-        <div className="container mx-auto">
+        <div className="container mx-auto lg:ml-12">
           <h2 className="text-xl font-bold mb-12 xl:mt-[5rem]">
             Recommended Products
           </h2>

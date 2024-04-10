@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Loader from "../../components/Loader";
 import Message from "../../components/Message";
@@ -21,8 +21,8 @@ import Rating from "./Ratings";
 import ProductTabs from "./ProductTabs";
 import { toast } from "react-toastify";
 import { addToCart } from "../../redux/features/cart/cartSlice";
-
 import { Card } from "antd";
+import { animateScroll as scroll } from "react-scroll";
 
 const ProductDetails = () => {
   const { id: productId } = useParams();
@@ -34,6 +34,8 @@ const ProductDetails = () => {
   const [qty, setQty] = useState(1);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
+  const [loadingNavigation, setLoadingNavigation] = useState(false);
+  const [reviewEvent, setReviewEvent] = useState(false);
 
   const {
     data: product,
@@ -41,6 +43,7 @@ const ProductDetails = () => {
     refetch,
     error,
   } = useGetProductDetailsQuery(productId);
+  console.log("product data", product);
 
   const { userInfo } = useSelector((state) => state.auth);
   const [createReview, { isLoading: loadingProductReview }] =
@@ -65,6 +68,27 @@ const ProductDetails = () => {
     dispatch(addToCart({ ...product, qty }));
     navigate("/cart");
   };
+
+  const handleNavigation = (path) => {
+    setLoadingNavigation(true);
+    setTimeout(() => {
+      navigate(path);
+      setLoadingNavigation(false);
+
+      // Smooth scroll animation to top
+      scroll.scrollToTop({
+        duration: 1000,
+        smooth: "easeInOutQuart",
+        offset: -100,
+      });
+    }, 2000);
+  };
+
+  useEffect(() => {
+    refetch();
+    setReviewEvent(false);
+  }, [reviewEvent]);
+
   const { Meta } = Card;
   return (
     <>
@@ -192,6 +216,7 @@ const ProductDetails = () => {
                 comment={comment}
                 setComment={setComment}
                 product={product}
+                reviewEvent={() => setReviewEvent(true)}
               />
             </div>
           </div>
@@ -210,7 +235,8 @@ const ProductDetails = () => {
                   hoverable
                   className="w-full object-contain transition ease-in-out delay-150  hover:-translate-y-1 hover:scale-105  duration-300"
                   cover={<img alt="example" src={product.image} />}
-                  onClick={() => navigate(`/product/${product._id}`)}
+                  // onClick={() => navigate(`/product/${product._id}`)}
+                  onClick={() => handleNavigation(`/product/${product._id}`)}
                 >
                   <Meta
                     title={product.name}
@@ -223,6 +249,11 @@ const ProductDetails = () => {
               </div>
             ))}
           </div>
+        </div>
+      )}
+      {loadingNavigation && (
+        <div className="fixed top-0 left-0 z-50 w-full h-full flex items-center justify-center bg-gray-700 bg-opacity-40">
+          <Loader />
         </div>
       )}
     </>

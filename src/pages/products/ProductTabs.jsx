@@ -1,10 +1,20 @@
-import React, { useState } from "react";
-import { useGetTopProductsQuery } from "../../redux/api/productApiSlice";
+import React, { useState, useEffect } from "react";
 import Loader from "../../components/Loader";
-import { Form, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Rating from "./Ratings";
-import SmallProduct from "./SmallProduct";
-
+import { FaUser } from "react-icons/fa";
+import { MdDelete, MdEdit } from "react-icons/md";
+import moment from "moment";
+import { Modal, Button, Input, Space, Select } from "antd";
+import { useUpdateProductReviewMutation } from "../../redux/api/productApiSlice";
+import { toast } from "react-toastify";
+const ratingLabels = {
+  1: "Inferior",
+  2: "Decent",
+  3: "Great",
+  4: "Excellent",
+  5: "Exceptional",
+};
 const ProductTabs = ({
   loadingProductReview,
   userInfo,
@@ -14,16 +24,58 @@ const ProductTabs = ({
   comment,
   setComment,
   product,
+  reviewEvent,
 }) => {
-  const { data, isLoading } = useGetTopProductsQuery();
   const [activeTab, setActiveTab] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  if (isLoading) {
-    return <Loader />;
-  }
+  const [editReview, setEditReview] = useState(null);
+  const [updatedComment, setUpdatedComment] = useState("");
+  const [updatedRating, setUpdatedRating] = useState("");
+  console.log("update rating", updatedRating);
+  const [updateReview, { isLoading: isUpdatingReview }] =
+    useUpdateProductReviewMutation();
+
+  console.log("product", product);
+  console.log("updated comment", updatedComment);
   const handleTabClick = (tabNumber) => {
     setActiveTab(tabNumber);
   };
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  const getReviewbyId = (reviewId, productId) => {
+    setEditReview({ reviewId, productId });
+    const review = product.reviews.find((review) => review._id === reviewId);
+    if (review) {
+      setUpdatedComment(review.comment);
+      setUpdatedRating(review.rating.toString());
+    }
+  };
+  const handleUpdateReview = async () => {
+    try {
+      await updateReview({
+        productId: editReview.productId,
+        reviewId: editReview.reviewId,
+        reviewData: {
+          comment: updatedComment,
+          rating: parseInt(updatedRating),
+        },
+      });
+
+      setIsModalOpen(false);
+      toast.success("Review updated successfully");
+      reviewEvent();
+    } catch (error) {
+      console.error("Failed to update review:", error);
+    }
+  };
+
   return (
     <div className=" flex flex-col md:flex-row">
       <section className=" mr-[5rem]">
@@ -43,14 +95,6 @@ const ProductTabs = ({
         >
           All Reviews
         </div>
-        <div
-          className={` flex-1 p-4 cursor-pointer text-lg ${
-            activeTab === 3 ? "font-bold" : ""
-          }`}
-          onClick={() => handleTabClick(3)}
-        >
-          Related Products
-        </div>
       </section>
 
       <section>
@@ -66,7 +110,7 @@ const ProductTabs = ({
                     id="rating"
                     required
                     value={rating}
-                    onChange={(e) => setRating(e.target.value)}
+                    onChange={(e) => setRating(parseInt(e.target.value))}
                     className=" p-2 border rounded-lg xl:w-[40rem] text-black"
                   >
                     <option value="">select</option>
@@ -116,40 +160,71 @@ const ProductTabs = ({
               {product.reviews.map((review) => (
                 <div
                   key={review._id}
-                  className="bg-[#28acef] p-4 rounded-lg xl:ml-[2rem] sm:ml-[0rem] xl:w-[50rem] sm:w-[24rem] mb-5 mt-3"
+                  className=" bg-green-100 p-4 rounded-lg xl:ml-[2rem] sm:ml-[0rem] xl:w-[50rem] sm:w-[24rem] mb-5 mt-3 font-poppins"
                 >
                   <div className=" flex justify-between">
-                    <strong className="text-black font-bold">
+                    <strong className="text-black font-bold flex items-center gap-4">
+                      <FaUser className=" text-xl text-blue-500" size={25} />
                       {review.name}
                     </strong>
-                    <p className=" my-4 text-black font-bold">
-                      {review.createdAt.substring(0, 10)}
+                    <p className=" my-4 text-black font-[400] text-sm">
+                      {moment(review.createdAt).fromNow()}
                     </p>
                   </div>
-                  <p className=" my-4 text-white font-bold">{review.comment}</p>
+                  <p className=" my-4 text-black font-semobold">
+                    {review.comment}
+                  </p>
                   <Rating value={review.rating} />
+                  {userInfo &&
+                    review.userId === userInfo.userId && ( // Check if user is authenticated and owns the comment
+                      <div className="flex gap-2">
+                        <MdEdit
+                          size={22}
+                          className="text-blue-600 mt-4"
+                          onClick={() => {
+                            showModal();
+                            getReviewbyId(review._id, product._id);
+                          }}
+                        />
+                        <MdDelete size={22} className="text-red-600 mt-4" />
+                      </div>
+                    )}
                 </div>
               ))}
             </div>
           </>
         )}
       </section>
+      <Modal
+        title="update Comment"
+        centered
+        open={isModalOpen}
+        onOk={handleUpdateReview}
+        onCancel={handleCancel}
+        okText="Update"
+        okButtonProps={{ style: { background: "green", borderColor: "green" } }}
+      >
+        <Input
+          placeholder=" enter your comment"
+          className="rounded-md "
+          value={updatedComment}
+          onChange={(e) => setUpdatedComment(e.target.value)}
+        />
 
-      <section>
-        {activeTab === 3 && (
-          <section className=" ml-[4rem] flex flex-wrap">
-            {!data ? (
-              <Loader />
-            ) : (
-              data.map((product) => (
-                <div key={product._id}>
-                  <SmallProduct product={product} />
-                </div>
-              ))
-            )}
-          </section>
-        )}
-      </section>
+        <Select
+          defaultValue=""
+          style={{ width: 120 }}
+          onChange={(value) => setUpdatedRating(value)}
+          value={updatedRating}
+          className=" mt-2"
+        >
+          {Object.entries(ratingLabels).map(([value, label]) => (
+            <Select.Option key={value} value={value}>
+              {label}
+            </Select.Option>
+          ))}
+        </Select>
+      </Modal>
     </div>
   );
 };

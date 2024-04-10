@@ -36,11 +36,12 @@ const Shop = () => {
   const categoriesQuery = useFetchCategoriesQuery();
   const [priceFilter, setPriceFilter] = useState("");
   const [searchKeyword, setSearchKeyword] = useState("");
+
   const [filteredData, setFilteredData] = useState([]);
   console.log("products data", products);
   console.log("search keyword", searchKeyword);
   console.log("filtered data", filteredData);
-
+  
   const filteredProductsQuery = useGetFilteredProductsQuery({
     checked,
     radio,
@@ -214,7 +215,7 @@ const Shop = () => {
 
       <div className="w-full flex justify-center">
         <div className=" ">
-          <div className="w-full grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4">
+          <div className="w-full grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
             {products?.length === 0 ? (
               <div className="flex w-full h-full items-center justify-center">
                 <Loader />

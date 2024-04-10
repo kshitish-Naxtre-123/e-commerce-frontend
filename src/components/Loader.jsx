@@ -1,13 +1,14 @@
-import React from 'react'
+import React from "react";
+import { PropagateLoader } from "react-spinners";
+import { PulseLoader } from "react-spinners";
 
-function Loader() {
+const Loader = () => {
   return (
-    <div className="animate-spin rounded-full h-16 w-16 border-t-4
-                    border-pink-500 border-opacity-50">
-                
+    <div className="loader-container">
+      {/* <PropagateLoader color="#56E7B7" loading={true} size={15} />{" "} */}
+      <PulseLoader color="#36D7B7" loading={true} size={15} />
     </div>
-  )
-}
+  );
+};
 
-export default Loader
-
+export default Loader;

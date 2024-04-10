@@ -38,9 +38,6 @@ const Shop = () => {
   const [priceFilter, setPriceFilter] = useState("");
   const [searchKeyword, setSearchKeyword] = useState("");
   const[filteredData,setFilteredData]=useState([])
-  console.log("products data",products);
-  console.log("search keyword",searchKeyword);
-  console.log("filtered data",filteredData);
 
 
   const filteredProductsQuery = useGetFilteredProductsQuery({

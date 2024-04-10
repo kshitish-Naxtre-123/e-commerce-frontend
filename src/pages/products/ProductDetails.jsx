@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Loader from "../../components/Loader";
 import Message from "../../components/Message";
@@ -15,8 +15,6 @@ import {
   FaStar,
   FaStore,
 } from "react-icons/fa";
-import { FaUser } from "react-icons/fa";
-
 import HeartIcon from "./HeartIcon";
 import moment from "moment";
 import Rating from "./Ratings";
@@ -37,6 +35,7 @@ const ProductDetails = () => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [loadingNavigation, setLoadingNavigation] = useState(false);
+  const [reviewEvent, setReviewEvent] = useState(false);
 
   const {
     data: product,
@@ -84,6 +83,12 @@ const ProductDetails = () => {
       });
     }, 2000);
   };
+
+  useEffect(() => {
+    refetch();
+    setReviewEvent(false);
+  }, [reviewEvent]);
+
   const { Meta } = Card;
   return (
     <>
@@ -211,35 +216,8 @@ const ProductDetails = () => {
                 comment={comment}
                 setComment={setComment}
                 product={product}
+                reviewEvent={() => setReviewEvent(true)}
               />
-            </div>
-            {/* Display reviews */}
-            <div className="mt-8 w-full font-poppins">
-              <h2 className="text-xl font-bold mb-4 ">Reviews</h2>
-              {product.reviews.length === 0 ? (
-                <Message>No reviews yet</Message>
-              ) : (
-                product.reviews.map((review) => (
-                  <div
-                    key={review._id}
-                    className="border-b border-gray-200 pb-4 mb-4"
-                  >
-                    <h3 className="font-bold flex gap-2 mb-3  items-center text-[18px]">
-                      {" "}
-                      <FaUser
-                        className=" text-xl text-blue-500"
-                        size={25}
-                      />
-                      {review.name}
-                    </h3>
-                    <Rating value={review.rating} color="yellow"  />
-                    <p className="text-gray-600 mt-3">{review.comment}</p>
-                    <p className="text-gray-400 text-sm">
-                      {moment(review.createdAt).fromNow()}
-                    </p>
-                  </div>
-                ))
-              )}
             </div>
           </div>
         </>

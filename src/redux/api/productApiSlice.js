@@ -96,12 +96,23 @@ export const productApiSlice = apiSlice.injectEndpoints({
         body: { checked, radio },
       }),
     }),
-    getRecommendedProducts:builder.query({
-      query:(productId)=>({
-        url:`${PRODUCT_URL}/recom/${productId}`
-      })
+    getRecommendedProducts: builder.query({
+      query: (productId) => ({
+        url: `${PRODUCT_URL}/recom/${productId}`,
+      }),
     }),
-   
+    getProductReview: builder.query({
+      query: ({ productId, reviewId }) => ({
+        url: `${PRODUCT_URL}/${productId}/reviews/${reviewId}`,
+      }),
+    }),
+    updateProductReview: builder.mutation({
+      query: ({ productId, reviewId, reviewData }) => ({
+        url: `${PRODUCT_URL}/${productId}/reviews/${reviewId}`,
+        method: "PUT",
+        body: reviewData,
+      }),
+    }),
   }),
 });
 
@@ -120,4 +131,6 @@ export const {
   useGetOurProductQuery,
   useGetFilteredProductsQuery,
   useGetRecommendedProductsQuery,
+  useGetProductReviewQuery,
+  useUpdateProductReviewMutation,
 } = productApiSlice;

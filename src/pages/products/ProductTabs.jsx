@@ -6,7 +6,10 @@ import { FaUser } from "react-icons/fa";
 import { MdDelete, MdEdit } from "react-icons/md";
 import moment from "moment";
 import { Modal, Button, Input, Space, Select } from "antd";
-import { useUpdateProductReviewMutation } from "../../redux/api/productApiSlice";
+import {
+  useUpdateProductReviewMutation,
+  useDeleteProductMutation,
+} from "../../redux/api/productApiSlice";
 import { toast } from "react-toastify";
 const ratingLabels = {
   1: "Inferior",
@@ -37,6 +40,8 @@ const ProductTabs = ({
   console.log("update rating", updatedRating);
   const [updateReview, { isLoading: isUpdatingReview }] =
     useUpdateProductReviewMutation();
+  const [deleteReview, { isLoading: isDeletingReview }] =
+    useDeleteProductMutation();
 
   console.log("product", product);
   console.log("updated comment", updatedComment);
@@ -75,6 +80,18 @@ const ProductTabs = ({
       reviewEvent();
     } catch (error) {
       console.error("Failed to update review:", error);
+    }
+  };
+  const handleDeleteReview = async (reviewId) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this review?");
+    if (confirmDelete) {
+      try {
+        await deleteReview({ productId: product._id, reviewId });
+        // reviewEvent();
+        toast.success("Review deleted successfully");
+      } catch (error) {
+        console.error("Failed to delete review:", error);
+      }
     }
   };
 
@@ -188,7 +205,11 @@ const ProductTabs = ({
                             getReviewbyId(review._id, product._id);
                           }}
                         />
-                        <MdDelete size={22} className="text-red-600 mt-4" />
+                        <MdDelete
+                          size={22}
+                          className="text-red-600 mt-4"
+                          onClick={() => handleDeleteReview(review._id,product._id)}
+                        />
                       </div>
                     )}
                 </div>
@@ -225,12 +246,6 @@ const ProductTabs = ({
           value={updatedComment}
           onChange={(e) => setUpdatedComment(e.target.value)}
         />
-        {/* <Input
-          placeholder=" enter your comment"
-          className="rounded-md "
-          value={updatedComment}
-          onChange={(e) => setUpdatedComment(e.target.value)}
-        /> */}
 
         <Select
           defaultValue=""

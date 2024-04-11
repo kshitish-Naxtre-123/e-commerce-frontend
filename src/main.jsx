@@ -38,13 +38,13 @@ import OrderList from "./pages/admin/OrderList.jsx";
 import AdminDashBoard from "./pages/admin/AdminDashBoard.jsx";
 
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
-import Auth from "./pages/auth/Auth.jsx";
+// import Auth from "./pages/auth/Auth.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route path="/login" element={<Login />} />
-      <Route path="/auth" element={<Auth />} />
+      {/* <Route path="/auth" element={<Auth />} /> */}
       <Route path="/register" element={<Register />} />
       <Route index={true} path="/" element={<Home />} />
       <Route path="/favorite" element={<Favorites />} />

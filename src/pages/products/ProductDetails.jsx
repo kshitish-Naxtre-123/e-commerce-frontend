@@ -170,22 +170,6 @@ const ProductDetails = () => {
                   text={`${product.numReviews} reviews`}
                   color="green"
                 />
-
-                {product.countInStock > 0 && (
-                  <div>
-                    <select
-                      value={qty}
-                      onChange={(e) => setQty(e.target.value)}
-                      className="p-2 w-[6rem] rounded-lg text-black"
-                    >
-                      {[...Array(product.countInStock).keys()].map((x) => (
-                        <option key={x + 1} value={x + 1}>
-                          {x + 1}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                )}
               </div>
 
               <div className=" btn-container flex gap-2">
@@ -203,6 +187,21 @@ const ProductDetails = () => {
                     size="21px"
                   />
                 </button>
+                {product.countInStock > 0 && (
+                  <div className=" ml-2">
+                    <select
+                      value={qty}
+                      onChange={(e) => setQty(e.target.value)}
+                      className="p-2 w-[6rem] rounded-lg text-black"
+                    >
+                      {[...Array(product.countInStock).keys()].map((x) => (
+                        <option key={x + 1} value={x + 1}>
+                          {x + 1}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
               </div>
             </div>
 

@@ -5,12 +5,14 @@ import Rating from "./Ratings";
 import { FaUser } from "react-icons/fa";
 import { MdDelete, MdEdit } from "react-icons/md";
 import moment from "moment";
-import { Modal, Button, Input, Space, Select } from "antd";
+import { Modal, Input, Select } from "antd";
 import {
   useUpdateProductReviewMutation,
-  useDeleteProductMutation,
+  useDeleteProductReviewMutation,
 } from "../../redux/api/productApiSlice";
 import { toast } from "react-toastify";
+import Swal from "sweetalert2";
+
 const ratingLabels = {
   1: "Inferior",
   2: "Decent",
@@ -31,23 +33,24 @@ const ProductTabs = ({
   product,
   reviewEvent,
 }) => {
+  //use state
   const [activeTab, setActiveTab] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const [editReview, setEditReview] = useState(null);
   const [updatedComment, setUpdatedComment] = useState("");
   const [updatedRating, setUpdatedRating] = useState("");
-  console.log("update rating", updatedRating);
+
+  // redux section
   const [updateReview, { isLoading: isUpdatingReview }] =
     useUpdateProductReviewMutation();
   const [deleteReview, { isLoading: isDeletingReview }] =
-    useDeleteProductMutation();
+    useDeleteProductReviewMutation();
 
-  console.log("product", product);
-  console.log("updated comment", updatedComment);
+  // function section
   const handleTabClick = (tabNumber) => {
     setActiveTab(tabNumber);
   };
+
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -64,35 +67,59 @@ const ProductTabs = ({
       setUpdatedRating(review.rating.toString());
     }
   };
-  const handleUpdateReview = async () => {
-    try {
-      await updateReview({
-        productId: editReview.productId,
-        reviewId: editReview.reviewId,
-        reviewData: {
-          comment: updatedComment,
-          rating: parseInt(updatedRating),
-        },
-      });
 
-      setIsModalOpen(false);
-      toast.success("Review updated successfully");
-      reviewEvent();
-    } catch (error) {
-      console.error("Failed to update review:", error);
-    }
-  };
-  const handleDeleteReview = async (reviewId) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this review?");
-    if (confirmDelete) {
-      try {
-        await deleteReview({ productId: product._id, reviewId });
-        // reviewEvent();
-        toast.success("Review deleted successfully");
-      } catch (error) {
-        console.error("Failed to delete review:", error);
+  const handleUpdateReview = async () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You want to update this review?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, update it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await updateReview({
+            productId: editReview.productId,
+            reviewId: editReview.reviewId,
+            reviewData: {
+              comment: updatedComment,
+              rating: parseInt(updatedRating),
+            },
+          });
+
+          setIsModalOpen(false);
+          toast.success("Review updated successfully");
+          reviewEvent();
+        } catch (error) {
+          console.error("Failed to update review:", error);
+          toast.error("Failed to update review.");
+        }
       }
-    }
+    });
+  };
+
+  const handleDeleteReview = async (reviewId) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You want to delete this review ?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await deleteReview({ productId: product._id, reviewId });
+          toast.success("Review deleted successfully");
+          reviewEvent();
+        } catch (error) {
+          toast.error("Failed to delete review:");
+        }
+      }
+    });
   };
 
   return (
@@ -208,7 +235,7 @@ const ProductTabs = ({
                         <MdDelete
                           size={22}
                           className="text-red-600 mt-4"
-                          onClick={() => handleDeleteReview(review._id,product._id)}
+                          onClick={() => handleDeleteReview(review._id)}
                         />
                       </div>
                     )}
@@ -241,7 +268,7 @@ const ProductTabs = ({
         <TextArea
           rows={4}
           placeholder="maxLength is 6"
-          maxLength={6}
+          // maxLength={6}
           className="rounded-md text-black font-poppins text-[14px] "
           value={updatedComment}
           onChange={(e) => setUpdatedComment(e.target.value)}

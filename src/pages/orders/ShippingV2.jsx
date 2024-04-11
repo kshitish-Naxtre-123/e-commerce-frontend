@@ -1,9 +1,56 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { Link, useNavigate } from "react-router-dom";
+
+import { clearCartItems } from "../../redux/features/cart/cartSlice.js";
+import { INDIAN_STATES } from "../../Utils/dataUtils";
+import { useCreateOrderMutation } from "../../redux/api/orderApiSlice.js";
+import {
+  saveShippingAddress,
+  savePaymentMethod,
+} from "../../redux/features/cart/cartSlice";
+import Loader from "../../components/Loader";
 
 const ShippingV2 = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const cart = useSelector((state) => state.cart);
-  const { cartItems } = cart;
+  const { userInfo } = useSelector((state) => state.auth);
+  const [createOrder, { isLoading, error }] = useCreateOrderMutation();
+
+  const { cartItems, shippingAdress } = cart;
+
+  const [address, setAddress] = useState(shippingAdress.address || "");
+  const [city, setCity] = useState(shippingAdress.city || "");
+  const [postalCode, setPostalCode] = useState(shippingAdress.postalCode || "");
+  const country = "india";
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    dispatch(saveShippingAddress({ address, city, postalCode, country }));
+    placeOrderHandler();
+  };
+
+  const placeOrderHandler = async () => {
+    try {
+      const res = await createOrder({
+        orderItems: cart.cartItems,
+        shippingAdress: cart.shippingAdress,
+        paymentMethod: cart.paymentMethod,
+        itemsPrice: cart.itemsPrice,
+        shippingPrice: cart.shippingPrice,
+        taxPrice: cart.taxPrice,
+        totalPrice: cart.totalPrice,
+      }).unwrap();
+      dispatch(clearCartItems());
+      navigate(`/order/${res._id}`);
+    } catch (error) {
+      toast.error(error);
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -15,9 +62,9 @@ const ShippingV2 = () => {
           <div className="relative">
             <ul className="relative flex w-full items-center justify-between space-x-2 sm:space-x-4">
               <li className="flex items-center space-x-3 text-left sm:space-x-4">
-                <a
+                <Link
                   className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-200 text-xs font-semibold text-emerald-700"
-                  href="#"
+                  to={"/cart"}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -33,7 +80,7 @@ const ShippingV2 = () => {
                       d="M5 13l4 4L19 7"
                     />
                   </svg>
-                </a>
+                </Link>
                 <span className="font-semibold text-gray-900">Cart</span>
               </li>
               <svg
@@ -176,44 +223,18 @@ const ShippingV2 = () => {
             Complete your order by providing your payment details.
           </p>
           <div className="">
-            <label for="email" className="mt-4 mb-2 block text-sm font-medium">
-              Email
-            </label>
-            <div className="relative">
-              <input
-                type="text"
-                id="email"
-                name="email"
-                className="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
-                placeholder="your.email@gmail.com"
-              />
-              <div className="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 text-gray-400"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
-                  />
-                </svg>
-              </div>
-            </div>
             <label
               for="card-holder"
               className="mt-4 mb-2 block text-sm font-medium"
             >
-              Card Holder
+              Person Name
             </label>
             <div className="relative">
               <input
                 type="text"
                 id="card-holder"
+                disabled={true}
+                value={userInfo.username}
                 name="card-holder"
                 className="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm uppercase shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
                 placeholder="Your full name here"
@@ -235,48 +256,37 @@ const ShippingV2 = () => {
                 </svg>
               </div>
             </div>
-            <label
-              for="card-no"
-              className="mt-4 mb-2 block text-sm font-medium"
-            >
-              Card Details
+            <label for="email" className="mt-4 mb-2 block text-sm font-medium">
+              Email
             </label>
-            <div className="flex">
-              <div className="relative w-7/12 flex-shrink-0">
-                <input
-                  type="text"
-                  id="card-no"
-                  name="card-no"
-                  className="w-full rounded-md border border-gray-200 px-2 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
-                  placeholder="xxxx-xxxx-xxxx-xxxx"
-                />
-                <div className="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
-                  <svg
-                    className="h-4 w-4 text-gray-400"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    viewBox="0 0 16 16"
-                  >
-                    <path d="M11 5.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1z" />
-                    <path d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2zm13 2v5H1V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zm-1 9H2a1 1 0 0 1-1-1v-1h14v1a1 1 0 0 1-1 1z" />
-                  </svg>
-                </div>
+            <div className="relative">
+              <input
+                type="text"
+                id="email"
+                disabled={true}
+                value={userInfo.email}
+                name="email"
+                className="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+                placeholder="your.email@gmail.com"
+              />
+              <div className="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4 text-gray-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
+                  />
+                </svg>
               </div>
-              <input
-                type="text"
-                name="credit-expiry"
-                className="w-full rounded-md border border-gray-200 px-2 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
-                placeholder="MM/YY"
-              />
-              <input
-                type="text"
-                name="credit-cvc"
-                className="w-1/6 flex-shrink-0 rounded-md border border-gray-200 px-2 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
-                placeholder="CVC"
-              />
             </div>
+
             <label
               for="billing-address"
               className="mt-4 mb-2 block text-sm font-medium"
@@ -289,27 +299,30 @@ const ShippingV2 = () => {
                   type="text"
                   id="billing-address"
                   name="billing-address"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
                   className="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
                   placeholder="Street Address"
                 />
-                <div className="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
-                  <img
-                    className="h-4 w-4 object-contain"
-                    src="https://flagpack.xyz/_nuxt/4c829b6c0131de7162790d2f897a90fd.svg"
-                    alt=""
-                  />
-                </div>
+                <div className="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3"></div>
               </div>
               <select
                 type="text"
                 name="billing-state"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
                 className="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
               >
                 <option value="State">State</option>
+                {INDIAN_STATES.map((state) => (
+                  <option value={state}>{state}</option>
+                ))}
               </select>
               <input
                 type="text"
                 name="billing-zip"
+                value={postalCode}
+                onChange={(e) => setPostalCode(e.target.value)}
                 className="flex-shrink-0 rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none sm:w-1/6 focus:z-10 focus:border-blue-500 focus:ring-blue-500"
                 placeholder="ZIP"
               />
@@ -347,7 +360,10 @@ const ShippingV2 = () => {
               </p>
             </div>
           </div>
-          <button className="mt-4 mb-8 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white">
+          <button
+            onClick={submitHandler}
+            className="mt-4 mb-8 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white"
+          >
             Place Order
           </button>
         </div>

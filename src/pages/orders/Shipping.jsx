@@ -15,7 +15,7 @@ const Shipping = () => {
     const[city,setCity]=useState(shippingAdress.city||"")
     const[postalCode,setPostalCode]=useState(shippingAdress.postalCode||"")
     const[country,setCountry]=useState(shippingAdress.country||"")
-
+    
     const dispatch=useDispatch()
     const navigate=useNavigate()
 

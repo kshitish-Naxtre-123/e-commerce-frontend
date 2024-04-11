@@ -6,6 +6,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { useLogoutMutation } from "../redux/api/usersApiSlice";
 import { logout } from "../redux/features/auth/authSlice";
 import logo from '../assets/logo.png'
+import { IoMdArrowDropdown,IoMdArrowDropup } from "react-icons/io";
+
 
 const TopBar = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -51,18 +53,18 @@ const TopBar = () => {
       <div className="flex items-center justify-center gap-10">
         <div className="flex gap-2 items-center" >
           {userInfo?.isadmin && (
-            <p className="text-pink-500 font-semibold text-sm">admin:</p>
+            <p className="text-pink-500 font-semibold text-sm font-poppins">Admin :</p>
           )}
-          <h3>{userInfo?.username || ""}</h3>
+          <h3 className=" font-poppins">{userInfo?.username || ""}</h3>
           {userInfo &&
             (dropdownOpen ? (
-              <IoIosArrowUp
+              <IoMdArrowDropdown
                 size={20}
                 className="ml-3 text-white"
                 onClick={toggleDropdown}
               />
             ) : (
-              <IoIosArrowDown
+              <IoMdArrowDropup
                 size={20}
                 className="ml-3 text-white"
                 onClick={toggleDropdown}

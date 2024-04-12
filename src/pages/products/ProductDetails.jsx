@@ -43,6 +43,7 @@ const ProductDetails = () => {
     refetch,
     error,
   } = useGetProductDetailsQuery(productId);
+
   console.log("product data", product);
 
   const { userInfo } = useSelector((state) => state.auth);
@@ -111,8 +112,8 @@ const ProductDetails = () => {
           <div className="flex flex-wrap relative items-between mt-[2rem] ml-[10rem] font-poppins">
             <div>
               <img
-                src={product.image}
-                alt={product.name}
+                src={product?.image}
+                alt={product?.name}
                 className=" w-full xl:w-[25rem] xl:h-[30rem] lg:w-[30rem] md:w-[30rem] sm:w-[20rem] mr-[2rem] object-contain "
               />
             </div>

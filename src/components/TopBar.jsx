@@ -1,15 +1,17 @@
-import React, { useRef,useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import { useState } from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useLogoutMutation } from "../redux/api/usersApiSlice";
 import { logout } from "../redux/features/auth/authSlice";
-import logo from '../assets/logo.png'
+import logo from "../assets/logo.png";
 
 const TopBar = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const toggleDropdown = () => {
     setDropdownOpen((prevState) => !prevState);
   };
@@ -20,8 +22,10 @@ const TopBar = () => {
   const [logoutApiCall] = useLogoutMutation();
   const logoutHandler = async () => {
     try {
+      setLoading(true);
       await logoutApiCall().unwrap();
       dispatch(logout());
+      setLoading(false);
       navigate("/login");
     } catch (error) {
       console.log(error);
@@ -46,10 +50,9 @@ const TopBar = () => {
     <nav className="z-50 w-full flex items-center justify-between fixed bg-gray-800 text-white px-10 py-7">
       <div className="">
         <h2>E-COMMERCE MANAGEMENT SYSTEM</h2>
-      
       </div>
       <div className="flex items-center justify-center gap-10">
-        <div className="flex gap-2 items-center" >
+        <div className="flex gap-2 items-center">
           {userInfo?.isadmin && (
             <p className="text-pink-500 font-semibold text-sm">admin:</p>
           )}
@@ -143,9 +146,10 @@ const TopBar = () => {
         {userInfo ? (
           <button
             className="bg-pink-500 px-5 py-1 rounded-md"
+            disabled={loading}
             onClick={logoutHandler}
           >
-            Logout
+            {loading ? <span>Logout...</span> : <span>Logout</span>}
           </button>
         ) : (
           <button

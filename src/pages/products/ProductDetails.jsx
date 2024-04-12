@@ -150,7 +150,7 @@ const ProductDetails = () => {
                   <h1 className=" flex items-center mb-6">
                     <FaStar className="mr-2 text-black " />
                     Ratings:
-                    <span className=" font-bold ">{rating}</span>
+                    <span className=" font-bold ">{product.rating}</span>
                   </h1>
                   <h1 className=" flex items-center mb-6">
                     <FaShoppingCart className=" mr-2 text-black" />

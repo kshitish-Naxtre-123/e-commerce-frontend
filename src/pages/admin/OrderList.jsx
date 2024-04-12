@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Table, Tag, Pagination, Button } from "antd";
 import Message from "../../components/Message";
@@ -16,7 +15,7 @@ const OrderList = () => {
     {
       title: (
         <span className=" font-poppins font-bold xl:ml-2">
-          {"Items".toUpperCase()}
+          {"Image".toUpperCase()}
         </span>
       ),
       dataIndex: "orderItems",
@@ -38,46 +37,57 @@ const OrderList = () => {
     {
       title: (
         <span className=" font-poppins font-bold xl:ml-2">
-          {"Items".toUpperCase()}
+          {"Order Id".toUpperCase()}
         </span>
       ),
       dataIndex: "_id",
       key: "_id",
+      render: (_id) => <span className=" font-poppins font-[400]">{_id}</span>,
     },
     {
       title: (
         <span className=" font-poppins font-bold xl:ml-2">
-          {"Items".toUpperCase()}
+          {"User".toUpperCase()}
         </span>
       ),
       dataIndex: "user",
       key: "user",
-      render: (user) => (user && user.username ? user.username : "N/A"),
+      render: (user) => (
+        <span className="font-poppins font-[400]">
+          {user && user.username ? user.username : "N/A"}
+        </span>
+      ),
     },
     {
       title: (
         <span className=" font-poppins font-bold xl:ml-2">
-          {"Items".toUpperCase()}
+          {"Date".toUpperCase()}
         </span>
       ),
       dataIndex: "createdAt",
       key: "createdAt",
-      render: (createdAt) => (createdAt ? createdAt.substring(0, 10) : "N/A"),
+      render: (createdAt) => (
+        <span className="font-poppins font-[400]">
+          {createdAt ? createdAt.substring(0, 10) : "N/A"}
+        </span>
+      ),
     },
     {
       title: (
         <span className=" font-poppins font-bold xl:ml-2">
-          {"Items".toUpperCase()}
+          {"Total".toUpperCase()}
         </span>
       ),
       dataIndex: "totalPrice",
       key: "totalPrice",
-      render: (totalPrice) => `₹ ${totalPrice}`,
+      render: (totalPrice) => (
+        <span className="font-poppins font-[400]">{`₹ ${totalPrice}`}</span>
+      ),
     },
     {
       title: (
         <span className=" font-poppins font-bold xl:ml-2">
-          {"Items".toUpperCase()}
+          {"Paid".toUpperCase()}
         </span>
       ),
       dataIndex: "isPaid",
@@ -95,7 +105,11 @@ const OrderList = () => {
       ),
     },
     {
-      title: "DELIVERED",
+      title: (
+        <span className=" font-poppins font-bold xl:ml-2">
+          {"Delivered".toUpperCase()}
+        </span>
+      ),
       dataIndex: "isDelivered",
       key: "isDelivered",
       render: (isDelivered) => (

@@ -5,7 +5,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useLogoutMutation } from "../redux/api/usersApiSlice";
 import { logout } from "../redux/features/auth/authSlice";
-import logo from "../assets/logo.png";
+
+import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
+import avatar from "../assets/avatar.svg";
 
 const TopBar = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -50,22 +52,36 @@ const TopBar = () => {
     <nav className="z-50 w-full flex items-center justify-between fixed bg-gray-800 text-white px-10 py-7">
       <div className="">
         <h2>E-COMMERCE MANAGEMENT SYSTEM</h2>
+
       </div>
       <div className="flex items-center justify-center gap-10">
         <div className="flex gap-2 items-center">
           {userInfo?.isadmin && (
-            <p className="text-pink-500 font-semibold text-sm">admin:</p>
+            <p className="text-pink-500 font-semibold text-sm font-poppins">
+              Admin :
+            </p>
           )}
-          <h3>{userInfo?.username || ""}</h3>
+          <h3 className=" font-poppins flex gap-2 items-center">
+            {" "}
+            {userInfo ? (
+              <img
+                src={avatar}
+                className=" text-white text-[20px] w-[30px] h-[30px]"
+              />
+            ) : (
+              ""
+            )}
+            {userInfo?.username || ""}
+          </h3>
           {userInfo &&
             (dropdownOpen ? (
-              <IoIosArrowUp
+              <IoMdArrowDropdown
                 size={20}
                 className="ml-3 text-white"
                 onClick={toggleDropdown}
               />
             ) : (
-              <IoIosArrowDown
+              <IoMdArrowDropup
                 size={20}
                 className="ml-3 text-white"
                 onClick={toggleDropdown}

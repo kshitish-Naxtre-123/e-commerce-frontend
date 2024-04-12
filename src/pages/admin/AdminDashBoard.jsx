@@ -1,5 +1,3 @@
-
-
 import Chart from "react-apexcharts";
 import { useGetUsersQuery } from "../../redux/api/usersApiSlice";
 import {
@@ -23,6 +21,72 @@ const AdminDashboard = () => {
   const { data: salesDetail } = useGetTotalSalesByDateQuery();
 
   const [state, setState] = useState({
+    options: {
+      chart: {
+        type: "bar",
+      },
+      tooltip: {
+        theme: "dark",
+      },
+      colors: ["#00E396"],
+      dataLabels: {
+        enabled: true,
+      },
+      stroke: {
+        curve: "smooth",
+      },
+      title: {
+        text: "Sales Trend",
+        align: "left",
+      },
+      grid: {
+        borderColor: "#ccc",
+      },
+      markers: {
+        size: 1,
+      },
+      xaxis: {
+        categories: [],
+        title: {
+          text: "Date",
+        },
+      },
+      yaxis: {
+        title: {
+          text: "Sales",
+        },
+        min: 0,
+      },
+      legend: {
+        position: "top",
+        horizontalAlign: "right",
+        floating: true,
+        offsetY: -25,
+        offsetX: -5,
+      },
+    },
+    series: [{ name: "Sales", data: [] }],
+  });
+
+  const [pieChartState, setPieChartState] = useState({
+    options: {
+      chart: {
+        type: "pie",
+        width: "200",
+      },
+      labels: [],
+      // legend: {
+      //   position: "top",
+      //   horizontalAlign: "right",
+      //   floating: true,
+      //   offsetY: -25,
+      //   offsetX: -5,
+      // },
+    },
+    series: [],
+  });
+
+  const[lineChartState,setLineChartState]=useState({
     options: {
       chart: {
         type: "line",
@@ -68,7 +132,7 @@ const AdminDashboard = () => {
       },
     },
     series: [{ name: "Sales", data: [] }],
-  });
+  })
 
   useEffect(() => {
     if (salesDetail) {
@@ -78,6 +142,28 @@ const AdminDashboard = () => {
       }));
 
       setState((prevState) => ({
+        ...prevState,
+        options: {
+          ...prevState.options,
+          xaxis: {
+            categories: formattedSalesDate.map((item) => item.x),
+          },
+        },
+
+        series: [
+          { name: "Sales", data: formattedSalesDate.map((item) => item.y) },
+        ],
+      }));
+      setPieChartState((prevState) => ({
+        ...prevState,
+        options: {
+          ...prevState.options,
+          labels: formattedSalesDate.map((item) => item.x),
+        },
+        series: formattedSalesDate.map((item) => item.y),
+      }));
+      
+      setLineChartState((prevState) => ({
         ...prevState,
         options: {
           ...prevState.options,
@@ -106,7 +192,7 @@ const AdminDashboard = () => {
 
             <p className="mt-5 font-poppins font-semibold">Sales</p>
             <h1 className="text-xl font-bold">
-            ₹ {isLoading ? <Loader /> : sales.totalSales.toFixed(2)}
+              ₹ {isLoading ? <Loader /> : sales.totalSales.toFixed(2)}
             </h1>
           </div>
           <div className="rounded-lg bg-orange-200 p-5 w-[25rem] mt-5">
@@ -131,15 +217,34 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        <div className="ml-[10rem] mt-[4rem]">
+        <div className="ml-[10rem] mt-[4rem] container">
           <Chart
             options={state.options}
-            series={state.series} 
+            series={state.series}
             type="bar"
-            width="90%"
+            width="60%"
           />
         </div>
-        <hr style={{ opacity: 4,height:"5px", width:"90%",margin:"auto"}} className=" text-gray-600"/>
+        <div className="ml-[10rem] mt-[6rem]">
+          <Chart
+            options={pieChartState.options}
+            series={pieChartState.series}
+            type="pie"
+            width="30%"
+          />
+        </div>
+        <div className="ml-[10rem] mt-[6rem]">
+          <Chart
+            options={lineChartState.options}
+            series={lineChartState.series}
+            type="line"
+            width="50%"
+          />
+        </div>
+        <hr
+          style={{ opacity: 4, height: "5px", width: "90%", margin: "auto" }}
+          className=" text-gray-600"
+        />
 
         <div className="mt-[4rem]">
           <OrderList />

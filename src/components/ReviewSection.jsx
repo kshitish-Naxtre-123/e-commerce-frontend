@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 
 import Ratings from "../pages/products/Ratings";
 import {
+  useCreateReviewMutation,
   useDeleteProductReviewMutation,
   useUpdateProductReviewMutation,
 } from "../redux/api/productApiSlice";
@@ -29,6 +30,8 @@ const ReviewSection = ({ product, productId, userInfo, reviewEvent }) => {
   const [editReview, setEditReview] = useState(null);
 
   // redux section
+  const [createReview, { isLoading: loadingProductReview }] =
+    useCreateReviewMutation();
   const [updateReview, { isLoading: isUpdatingReview }] =
     useUpdateProductReviewMutation();
   const [deleteReview, { isLoading: isDeletingReview }] =
@@ -43,16 +46,16 @@ const ReviewSection = ({ product, productId, userInfo, reviewEvent }) => {
     }
   };
 
-  const handleCreateReview = async (e) => {
-    e.preventDefault();
+  const handleCreateReview = async () => {
     try {
       await createReview({
         productId,
         rating,
         comment,
       }).unwrap();
-      refetch();
+      setIsModalOpen(false);
       toast.success("Review create Successfully");
+      reviewEvent();
     } catch (error) {
       toast.error(error?.data || error.message);
     }
@@ -126,44 +129,52 @@ const ReviewSection = ({ product, productId, userInfo, reviewEvent }) => {
             Add Review
           </button>
         </div>
-        {product?.reviews?.map((review, index) => {
-          if (index <= 5) {
-            return (
-              <div className="w-full flex flex-wrap py-10 border-b-2">
-                <div className="basis-2/6 flex flex-col gap-3">
-                  <span className="capitalize font-poppins">{review.name}</span>
-                  <span className="text-gray-600">
-                    {moment(review.createdAt).fromNow()}
-                  </span>
-                </div>
-                <div className="basis-4/6">
-                  <div className="mb-4 flex gap-3 items-center">
-                    <Ratings value={review.rating} />
-                    {userInfo._id == review.user && (
-                      <div className="flex items-center gap-1">
-                        <MdEdit
-                          size={22}
-                          className="text-gray-700 cursor-pointer"
-                          onClick={() => {
-                            setIsUpdate(true);
-                            setIsModalOpen(true);
-                            getReviewbyId(review._id, product._id);
-                          }}
-                        />
-                        <MdDelete
-                          size={22}
-                          className="text-gray-700 cursor-pointer"
-                          onClick={() => handleDeleteReview(review._id)}
-                        />
-                      </div>
-                    )}
+        {product?.reviews.length > 0 ? (
+          product?.reviews?.map((review, index) => {
+            if (index <= 5) {
+              return (
+                <div className="w-full flex flex-wrap py-10 border-b-2">
+                  <div className="basis-2/6 flex flex-col gap-3">
+                    <span className="capitalize font-poppins">
+                      {review.name}
+                    </span>
+                    <span className="text-gray-600">
+                      {moment(review.createdAt).fromNow()}
+                    </span>
                   </div>
-                  <p>{review.comment}</p>
+                  <div className="basis-4/6">
+                    <div className="mb-4 flex gap-3 items-center">
+                      <Ratings value={review.rating} />
+                      {userInfo._id == review.user && (
+                        <div className="flex items-center gap-1">
+                          <MdEdit
+                            size={22}
+                            className="text-gray-700 cursor-pointer"
+                            onClick={() => {
+                              setIsUpdate(true);
+                              setIsModalOpen(true);
+                              getReviewbyId(review._id, product._id);
+                            }}
+                          />
+                          <MdDelete
+                            size={22}
+                            className="text-gray-700 cursor-pointer"
+                            onClick={() => handleDeleteReview(review._id)}
+                          />
+                        </div>
+                      )}
+                    </div>
+                    <p>{review.comment}</p>
+                  </div>
                 </div>
-              </div>
-            );
-          }
-        })}
+              );
+            }
+          })
+        ) : (
+          <div className="flex items-center justify-center text-gray-500 font-mono font-semibold">
+            No reviews yet, add a review.
+          </div>
+        )}
         {product?.reviews?.length >= 5 && (
           <span className="text-blue-600 font-mono">View All</span>
         )}

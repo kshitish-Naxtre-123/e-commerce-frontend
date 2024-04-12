@@ -87,7 +87,11 @@ const ProductDetailsV2 = () => {
       <section className="w-full px-[5%] flex flex-col gap-10">
         <div className="w-full grid md:grid-cols-2 grid-cols-1">
           <div className="flex w-full items-center justify-center">
-            <img src={product?.image} alt={product?.name} />
+            <img
+              src={product?.image}
+              alt={product?.name}
+              className="w-[335px] h-[416px] object-contain"
+            />
           </div>
           <div className="flex flex-col justify-between">
             <div className="flex flex-col gap-3">
@@ -144,12 +148,15 @@ const ProductDetailsV2 = () => {
               <p>Loading...</p>
             ) : (
               <div className="grid md:grid-cols-4 grid-cols-3">
-                {recommendedProducts?.map((product) => (
-                  <>
+                {recommendedProducts?.length ? (
+                  recommendedProducts?.map((product) => (
                     <ProductCard product={product} />
-                    <p>{product?.name}</p>
-                  </>
-                ))}
+                  ))
+                ) : (
+                  <p className="text-semibold font-sans w-full">
+                    No related products available right now
+                  </p>
+                )}
               </div>
             )}
           </div>

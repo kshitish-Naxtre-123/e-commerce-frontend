@@ -46,7 +46,7 @@ const ProductCard = ({ p }) => {
             margin: "auto",
             marginTop: "10px",
           }}
-          image={p.image}
+          image={p?.image}
           alt="Paella dish"
           onClick={() => navigate(`/product/${p._id}`)}
         />
@@ -61,8 +61,8 @@ const ProductCard = ({ p }) => {
           <Typography
             className="text-black font-bold font-poppins text-md"
             style={{
-              fontSize: "18px", 
-              fontWeight: "600" 
+              fontSize: "18px",
+              fontWeight: "600",
             }}
             onClick={() => navigate(`/product/${p._id}`)}
           >

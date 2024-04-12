@@ -23,7 +23,7 @@ const CartV2 = () => {
   };
 
   const checkHandler = () => {
-    navigate("/login?redirect=/shipping");
+    navigate("/auth?redirect=/shipping");
   };
 
   return (

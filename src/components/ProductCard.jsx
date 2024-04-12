@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
+
   return (
     <div className="mb-10">
       <div className="place-items-center">

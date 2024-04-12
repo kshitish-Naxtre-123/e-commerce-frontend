@@ -26,6 +26,7 @@ import {
   removeFavouriteFromLocalStorage,
 } from "../../Utils/localStotage";
 import ReviewSection from "../../components/ReviewSection";
+import { animateScroll as scroll } from "react-scroll";
 
 const ProductDetailsV2 = () => {
   const { id: productId } = useParams();
@@ -47,6 +48,7 @@ const ProductDetailsV2 = () => {
 
   const isFavourites = favourites.some((p) => p._id === product._id);
   const [reviewEvent, setReviewEvent] = useState(false);
+  const [loadingNavigation, setLoadingNavigation] = useState(false);
 
   useEffect(() => {
     const favouritesFromLocalStorage = getFavouritesFromLocalStorage();
@@ -78,6 +80,21 @@ const ProductDetailsV2 = () => {
     });
   };
 
+  const handleNavigation = (path) => {
+    setLoadingNavigation(true);
+    setTimeout(() => {
+      navigate(path);
+      setLoadingNavigation(false);
+
+      // Smooth scroll animation to top
+      scroll.scrollToTop({
+        duration: 1000,
+        smooth: "easeInOutQuart",
+        offset: -100,
+      });
+    }, 2000);
+  };
+
   if (error) {
     return <p>{error.message}</p>;
   }
@@ -104,12 +121,19 @@ const ProductDetailsV2 = () => {
             <div className="flex flex-col gap-2">
               <h3 className="font-bold text-2xl">₹ {product?.price}</h3>
               <div className="w-full flex justify-between flex-wrap">
-                <p className="text-gray-800 font-sans">
+                <p className="text-gray-800 font-poppins">
                   In Stock: {product?.countInStock}
                 </p>
-                <p>Quantity: {product?.quantity}</p>
-                <p>Added: {moment(product?.createAt).fromNow()}</p>
+                <p className="text-gray-800 font-poppins">
+                  Rating: {product?.rating}
+                </p>
+                <p className="text-gray-800 font-poppins">
+                  Added: {moment(product?.createAt).fromNow()}
+                </p>
               </div>
+              <p className="text-gray-800 font-poppins">
+                Reviews: {product?.numReviews}
+              </p>
             </div>
             <div className="flex items-center gap-3 ">
               <button

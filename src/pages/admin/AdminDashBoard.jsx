@@ -4,6 +4,8 @@ import {
   useGetTotalOrdersQuery,
   useGetTotalSalesByDateQuery,
   useGetTotalSalesQuery,
+  useProductSoldByCategoryQuery,
+  useGetPaymentStatusQuery,
 } from "../../redux/api/orderApiSlice";
 
 import { useState, useEffect } from "react";
@@ -13,12 +15,16 @@ import Loader from "../../components/Loader";
 import { FaUsers } from "react-icons/fa";
 import { MdSell } from "react-icons/md";
 import { Divider } from "antd";
+import moment from "moment";
 
 const AdminDashboard = () => {
   const { data: sales, isLoading } = useGetTotalSalesQuery();
   const { data: customers, isLoading: loading } = useGetUsersQuery();
   const { data: orders, isLoading: loadingTwo } = useGetTotalOrdersQuery();
   const { data: salesDetail } = useGetTotalSalesByDateQuery();
+  const { data: soldDetails } = useProductSoldByCategoryQuery();
+  const { data: paymentStatus } = useGetPaymentStatusQuery();
+  console.log("payment status", paymentStatus);
 
   const [state, setState] = useState({
     options: {
@@ -48,12 +54,12 @@ const AdminDashboard = () => {
       xaxis: {
         categories: [],
         title: {
-          text: "Date",
+          text: "Category",
         },
       },
       yaxis: {
         title: {
-          text: "Sales",
+          text: "Order",
         },
         min: 0,
       },
@@ -71,40 +77,46 @@ const AdminDashboard = () => {
   const [pieChartState, setPieChartState] = useState({
     options: {
       chart: {
-        type: "pie",
+        type: "donut",
         width: "200",
       },
+      responsive: [{
+        breakpoint: 480,
+        options: {
+          legend: {
+            position: 'center'
+          }
+        }
+      }],
       labels: [],
-      // legend: {
-      //   position: "top",
-      //   horizontalAlign: "right",
-      //   floating: true,
-      //   offsetY: -25,
-      //   offsetX: -5,
-      // },
     },
     series: [],
   });
 
-  const[lineChartState,setLineChartState]=useState({
+  const [lineChartState, setLineChartState] = useState({
     options: {
       chart: {
         type: "line",
+        height: 350,
+        zoom: {
+          enabled: true,
+        },
       },
       tooltip: {
         theme: "dark",
       },
-      colors: ["#00E396"],
+      colors: ["#9600e3"],
       dataLabels: {
-        enabled: true,
+        enabled: false,
       },
       stroke: {
         curve: "smooth",
       },
       title: {
-        text: "Sales Trend",
+        text: "Sales Details",
         align: "left",
       },
+
       grid: {
         borderColor: "#ccc",
       },
@@ -123,46 +135,25 @@ const AdminDashboard = () => {
         },
         min: 0,
       },
-      legend: {
-        position: "top",
-        horizontalAlign: "right",
-        floating: true,
-        offsetY: -25,
-        offsetX: -5,
-      },
+      // legend: {
+      //   position: "top",
+      //   horizontalAlign: "right",
+      //   floating: true,
+      //   offsetY: -25,
+      //   offsetX: -5,
+      // },
     },
     series: [{ name: "Sales", data: [] }],
-  })
+  });
 
   useEffect(() => {
     if (salesDetail) {
       const formattedSalesDate = salesDetail.map((item) => ({
-        x: item._id,
+        x: moment(item._id).format('DD MMM'),
         y: item.totalSales,
       }));
+      console.log(salesDetail)
 
-      setState((prevState) => ({
-        ...prevState,
-        options: {
-          ...prevState.options,
-          xaxis: {
-            categories: formattedSalesDate.map((item) => item.x),
-          },
-        },
-
-        series: [
-          { name: "Sales", data: formattedSalesDate.map((item) => item.y) },
-        ],
-      }));
-      setPieChartState((prevState) => ({
-        ...prevState,
-        options: {
-          ...prevState.options,
-          labels: formattedSalesDate.map((item) => item.x),
-        },
-        series: formattedSalesDate.map((item) => item.y),
-      }));
-      
       setLineChartState((prevState) => ({
         ...prevState,
         options: {
@@ -179,6 +170,49 @@ const AdminDashboard = () => {
     }
   }, [salesDetail]);
 
+  useEffect(() => {
+    if (soldDetails) {
+      const formattedSoldDetails = soldDetails.map((item) => ({
+        x: item._id,
+        y: item.orderCount,
+      }));
+      setState((prevState) => ({
+        ...prevState,
+        options: {
+          ...prevState.options,
+          xaxis: {
+            categories: formattedSoldDetails.map((item) => item.x),
+          },
+        },
+
+        series: [
+          { name: "Sales", data: formattedSoldDetails.map((item) => item.y) },
+        ],
+      }));
+    }
+  }, [soldDetails]);
+
+  useEffect(() => {
+    if (paymentStatus) {
+      setPieChartState({
+        options: {
+          labels: [
+            "Paid Orders",
+            "Unpaid Orders",
+            "Delivered Items",
+            "Undelivered Items",
+          ],
+        },
+        series: [
+          paymentStatus.paidOrders,
+          paymentStatus.unpaidOrders,
+          paymentStatus.deliveredItems,
+          paymentStatus.undeliveredItems,
+        ],
+      });
+    }
+  }, [paymentStatus]);
+
   return (
     <>
       <AdminMenu />
@@ -192,7 +226,7 @@ const AdminDashboard = () => {
 
             <p className="mt-5 font-poppins font-semibold">Sales</p>
             <h1 className="text-xl font-bold">
-              ₹ {isLoading ? <Loader /> : sales.totalSales.toFixed(2)}
+              ₹ {isLoading ? <Loader /> : sales?.totalSales.toFixed(2)}
             </h1>
           </div>
           <div className="rounded-lg bg-orange-200 p-5 w-[25rem] mt-5">
@@ -217,29 +251,35 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        <div className="ml-[10rem] mt-[4rem] container">
+        <div className=" container md:w-[80%] w-[100%]">
           <Chart
             options={state.options}
             series={state.series}
             type="bar"
-            width="60%"
+            width="70%"
           />
+      
         </div>
-        <div className="ml-[10rem] mt-[6rem]">
-          <Chart
-            options={pieChartState.options}
-            series={pieChartState.series}
-            type="pie"
-            width="30%"
-          />
-        </div>
-        <div className="ml-[10rem] mt-[6rem]">
+        <div className="mx-[10%] grid md:grid-cols-[2fr_1fr] grid-cols-1 h-[500px]">
+        <div className="">
           <Chart
             options={lineChartState.options}
             series={lineChartState.series}
             type="line"
-            width="50%"
+            width="100%"
+            height="100%"
           />
+        </div>
+        <div className="">
+          <Chart
+            options={pieChartState.options}
+            series={pieChartState.series}
+            type="donut"
+            width="100%"
+            height="100%"
+            
+          />
+        </div>
         </div>
         <hr
           style={{ opacity: 4, height: "5px", width: "90%", margin: "auto" }}

@@ -119,7 +119,6 @@ export const productApiSlice = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
     }),
-
   }),
 });
 
@@ -140,5 +139,5 @@ export const {
   useGetRecommendedProductsQuery,
   useGetProductReviewQuery,
   useUpdateProductReviewMutation,
-  useDeleteProductReviewMutation
+  useDeleteProductReviewMutation,
 } = productApiSlice;

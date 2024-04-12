@@ -28,7 +28,7 @@ const TopBar = () => {
       await logoutApiCall().unwrap();
       dispatch(logout());
       setLoading(false);
-      navigate("/login");
+      navigate("/auth");
     } catch (error) {
       console.log(error);
     }
@@ -171,7 +171,7 @@ const TopBar = () => {
           <button
             className="bg-pink-500 px-5 py-1 rounded-md"
             onClick={() => {
-              navigate("/login");
+              navigate("/auth");
             }}
           >
             Login

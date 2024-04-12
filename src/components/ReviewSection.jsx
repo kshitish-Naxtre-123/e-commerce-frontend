@@ -39,7 +39,7 @@ const ReviewSection = ({ product, productId, userInfo, reviewEvent }) => {
 
   const getReviewbyId = (reviewId, productId) => {
     setEditReview({ reviewId, productId });
-    const review = product.reviews.find((review) => review._id === reviewId);
+    const review = product.reviews.find((review) => review?._id === reviewId);
     if (review) {
       setComment(review.comment);
       setRating(review.rating.toString());
@@ -107,7 +107,7 @@ const ReviewSection = ({ product, productId, userInfo, reviewEvent }) => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await deleteReview({ productId: product._id, reviewId });
+          await deleteReview({ productId: product?._id, reviewId });
           toast.success("Review deleted successfully");
           reviewEvent();
         } catch (error) {
@@ -145,7 +145,7 @@ const ReviewSection = ({ product, productId, userInfo, reviewEvent }) => {
                   <div className="basis-4/6">
                     <div className="mb-4 flex gap-3 items-center">
                       <Ratings value={review.rating} />
-                      {userInfo._id == review.user && (
+                      {userInfo?._id == review.user && (
                         <div className="flex items-center gap-1">
                           <MdEdit
                             size={22}
@@ -153,13 +153,13 @@ const ReviewSection = ({ product, productId, userInfo, reviewEvent }) => {
                             onClick={() => {
                               setIsUpdate(true);
                               setIsModalOpen(true);
-                              getReviewbyId(review._id, product._id);
+                              getReviewbyId(review?._id, product?._id);
                             }}
                           />
                           <MdDelete
                             size={22}
                             className="text-gray-700 cursor-pointer"
-                            onClick={() => handleDeleteReview(review._id)}
+                            onClick={() => handleDeleteReview(review?._id)}
                           />
                         </div>
                       )}

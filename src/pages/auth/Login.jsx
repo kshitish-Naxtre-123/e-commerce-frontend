@@ -97,7 +97,7 @@ function Login() {
                     <div className="mt-4">
                         <p className=' text-black'>New Customer ? {""}
                           <Link 
-                             to={redirect ? `/register?redirect=${redirect}`:"/register"}
+                             to={redirect ? `/auth?redirect=${redirect}`:"/auth"}
                              className="text-pink-500 hover:underline"
                           >
                           Register

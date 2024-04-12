@@ -15,19 +15,19 @@ const ServiceData = [
   },
   {
     id: 2,
-    icon: <FaCheckCircle className="text-4xl md:text-5xl text-primary" />,
+    icon: <FaCheckCircle className="text-4xl md:text-5xl text-brandGreen" />,
     title: "Safe Money ",
     description: "30 Days Money Back",
   },
   {
     id: 3,
-    icon: <FaWallet className="text-4xl md:text-5xl text-primary" />,
+    icon: <FaWallet className="text-4xl md:text-5xl text-brandBlue" />,
     title: "Secure Payment",
     description: "All Payment Secure",
   },
   {
     id: 4,
-    icon: <FaHeadphonesAlt className="text-4xl md:text-5xl text-primary" />,
+    icon: <FaHeadphonesAlt className="text-4xl md:text-5xl text-brandYellow" />,
     title: "Online Support 24/7",
     description: "Technical Support 24/7",
   },

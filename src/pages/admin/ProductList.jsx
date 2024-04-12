@@ -75,20 +75,6 @@ const ProductList = () => {
             Create Product
           </div>
 
-          {/* <div className="mb-3 flex flex-col items-center justify-center">
-            <label className="border text-black px-4 block w-full text-center rounded-lg cursor-pointer font-bold py-11">
-              {image ? image.name : "Upload Image"}
-
-              <input
-                type="file"
-                name="image"
-                accept="image/*"
-                onChange={uploadFileHandler}
-                className={!image ? "" : "text-white"}
-              />
-            </label>
-          </div> */}
-
           <div class="flex items-center justify-center w-full">
             <label
               for="dropzone-file"

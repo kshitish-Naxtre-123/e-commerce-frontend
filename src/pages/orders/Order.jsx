@@ -142,32 +142,34 @@ const Order = () => {
       </div>
 
       <div className="md:w-[45%] border border-gray-200 shadow-lg rounded-md mt-6">
-        <div className="mt-5 border-gray-300 pb-4 mb-4 px-6 py-6 ">
+        <div className="mt-5  pb-4 mb-4 px-6 py-6 ">
           <h2 className="text-xl font-bold mb-6">Payment</h2>
-          <p className="mb-4 mt-4 border rounded-md shadow-md border-gray-200 px-2 py-2 font-poppins">
-            <strong className="text-pink-500">Order:</strong> {order._id}
-          </p>
+          <div className="mt-4 border rounded-md shadow-lg border-gray-200 px-3 py-3 font-poppins mb-6">
+            <p className="mb-4 ">
+              <strong className="text-pink-500">Order:</strong> {order._id}
+            </p>
 
-          <p className="mb-4 mt-4 border rounded-md shadow-md border-gray-200 px-2 py-2 font-poppins">
-            <strong className="text-pink-500">Name:</strong>{" "}
-            {order.user.username}
-          </p>
+            <p className="mb-4 ">
+              <strong className="text-pink-500">Name:</strong>{" "}
+              {order.user.username}
+            </p>
 
-          <p className="mb-4 mt-4 border rounded-md shadow-md border-gray-200 px-2 py-2 font-poppins">
-            <strong className="text-pink-500">Email:</strong> {order.user.email}
-          </p>
+            <p className="mb-4 ">
+              <strong className="text-pink-500">Email:</strong>{" "}
+              {order.user.email}
+            </p>
 
-          <p className="mb-4 mt-4 border rounded-md shadow-md border-gray-200 px-2 py-2 font-poppins">
-            <strong className="text-pink-500">Address:</strong>{" "}
-            {order.shippingAdress.address}, {order.shippingAdress.city}{" "}
-            {order.shippingAdress.postalCode}, {order.shippingAdress.country}
-          </p>
+            <p className="mb-4 ">
+              <strong className="text-pink-500">Address:</strong>{" "}
+              {order.shippingAdress.address}, {order.shippingAdress.city}{" "}
+              {order.shippingAdress.postalCode}, {order.shippingAdress.country}
+            </p>
 
-          <p className="mb-4 mt-4 border rounded-md shadow-md border-gray-200 px-2 py-2 font-poppins">
-            <strong className="text-pink-500">Method:</strong>{" "}
-            {order.paymentMethod}
-          </p>
-
+            <p className="mb-4 ">
+              <strong className="text-pink-500">Method:</strong>{" "}
+              {order.paymentMethod}
+            </p>
+          </div>
           {order.isPaid ? (
             <Messsage variant="success">Paid on {order.paidAt}</Messsage>
           ) : (

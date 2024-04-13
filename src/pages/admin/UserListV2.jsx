@@ -12,7 +12,6 @@ import Loader from "../../components/Loader.jsx";
 import AdminMenu from "./AdminMenu.jsx";
 import Swal from "sweetalert2";
 
-
 const UserListV2 = () => {
   const { data: users, refetch, isLoading, error } = useGetUsersQuery();
 
@@ -34,20 +33,6 @@ const UserListV2 = () => {
     setEditableUserEmail(email);
   };
 
-  // const updateHandler = async (id) => {
-  //   try {
-  //     await updateUser({
-  //       userId: id,
-  //       username: editableUserName,
-  //       email: editableUserEmail,
-  //     });
-  //     setEditbleUserId(null);
-  //     refetch();
-  //   } catch (err) {
-  //     toast.error(err?.data?.message || err.error);
-  //   }
-  // };
-
   const updateHandler = async (id) => {
     const result = await Swal.fire({
       title: "Are you sure?",
@@ -56,9 +41,9 @@ const UserListV2 = () => {
       showCancelButton: true,
       confirmButtonText: "Yes, update it!",
       cancelButtonText: "No, cancel!",
-      reverseButtons: true
+      reverseButtons: true,
     });
-  
+
     if (result.isConfirmed) {
       try {
         await updateUser({
@@ -69,7 +54,7 @@ const UserListV2 = () => {
         await Swal.fire({
           title: "Updated!",
           text: "User has been updated.",
-          icon: "success"
+          icon: "success",
         });
         // toast.success("User has been updated.");
         setEditbleUserId(null);
@@ -81,13 +66,12 @@ const UserListV2 = () => {
       Swal.fire({
         title: "Cancelled",
         text: "User update cancelled.",
-        icon: "error"
+        icon: "error",
       });
     }
   };
-  
 
-  const deleteHandler = async (id,username) => {
+  const deleteHandler = async (id, username) => {
     const result = await Swal.fire({
       title: "Are you sure?",
       text: "You want to delete this user!",
@@ -95,7 +79,7 @@ const UserListV2 = () => {
       showCancelButton: true,
       confirmButtonText: "Yes, delete it!",
       cancelButtonText: "No, cancel!",
-      reverseButtons: true
+      reverseButtons: true,
     });
 
     if (result.isConfirmed) {
@@ -104,7 +88,7 @@ const UserListV2 = () => {
         await Swal.fire({
           title: "Deleted!",
           text: `${username} has been deleted.`,
-          icon: "success"
+          icon: "success",
         });
         refetch();
       } catch (err) {
@@ -114,7 +98,7 @@ const UserListV2 = () => {
       Swal.fire({
         title: "Cancelled",
         text: "this User data is safe :)",
-        icon: "error"
+        icon: "error",
       });
     }
   };
@@ -208,16 +192,20 @@ const UserListV2 = () => {
                     }}
                     class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                   >
-                    {editableUserId === user._id && toggleUpdate
-                      ? (<button className=" bg-green-400 rounded-md px-3 py-2 text-white">Update</button>)
-                      : (<FaEdit size={18}/>)}
+                    {editableUserId === user._id && toggleUpdate ? (
+                      <button className=" bg-green-400 rounded-md px-3 py-2 text-white">
+                        Update
+                      </button>
+                    ) : (
+                      <FaEdit size={18} />
+                    )}
                   </button>
                   <button
                     onClick={() => {
-                      deleteHandler(user._id,user.username);
+                      deleteHandler(user._id, user.username);
                     }}
                   >
-                    <FaTrash className=" text-red-600 text-[16px]"/>
+                    <FaTrash className=" text-red-600 text-[16px]" />
                   </button>
                 </td>
               </tr>

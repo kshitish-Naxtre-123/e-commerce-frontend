@@ -1,12 +1,11 @@
 import React, { useRef, useEffect } from "react";
 import { useState } from "react";
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useLogoutMutation } from "../redux/api/usersApiSlice";
 import { logout } from "../redux/features/auth/authSlice";
 
-import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
+import { IoIosArrowUp,IoIosArrowDown } from "react-icons/io";
 import avatar from "../assets/avatar.svg";
 
 const TopBar = () => {
@@ -75,13 +74,13 @@ const TopBar = () => {
           </h3>
           {userInfo &&
             (dropdownOpen ? (
-              <IoMdArrowDropup
+              <IoIosArrowUp
                 size={20}
-                className="ml-3 text-white"
+                className="ml-3 text-white "
                 onClick={toggleDropdown}
               />
             ) : (
-              <IoMdArrowDropdown
+              <IoIosArrowDown
                 size={20}
                 className="ml-3 text-white"
                 onClick={toggleDropdown}

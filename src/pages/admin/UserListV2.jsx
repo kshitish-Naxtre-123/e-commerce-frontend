@@ -10,6 +10,8 @@ import {
 } from "../../redux/api/usersApiSlice.js";
 import Loader from "../../components/Loader.jsx";
 import AdminMenu from "./AdminMenu.jsx";
+import Swal from "sweetalert2";
+
 
 const UserListV2 = () => {
   const { data: users, refetch, isLoading, error } = useGetUsersQuery();
@@ -32,28 +34,88 @@ const UserListV2 = () => {
     setEditableUserEmail(email);
   };
 
-  const updateHandler = async (id) => {
-    try {
-      await updateUser({
-        userId: id,
-        username: editableUserName,
-        email: editableUserEmail,
-      });
-      setEditbleUserId(null);
-      refetch();
-    } catch (err) {
-      toast.error(err?.data?.message || err.error);
-    }
-  };
+  // const updateHandler = async (id) => {
+  //   try {
+  //     await updateUser({
+  //       userId: id,
+  //       username: editableUserName,
+  //       email: editableUserEmail,
+  //     });
+  //     setEditbleUserId(null);
+  //     refetch();
+  //   } catch (err) {
+  //     toast.error(err?.data?.message || err.error);
+  //   }
+  // };
 
-  const deleteHandler = async (id) => {
-    if (window.confirm("Are You sure")) {
+  const updateHandler = async (id) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You are about to update this user.",
+      icon: "info",
+      showCancelButton: true,
+      confirmButtonText: "Yes, update it!",
+      cancelButtonText: "No, cancel!",
+      reverseButtons: true
+    });
+  
+    if (result.isConfirmed) {
       try {
-        await deleteUser(id);
+        await updateUser({
+          userId: id,
+          username: editableUserName,
+          email: editableUserEmail,
+        });
+        await Swal.fire({
+          title: "Updated!",
+          text: "User has been updated.",
+          icon: "success"
+        });
+        // toast.success("User has been updated.");
+        setEditbleUserId(null);
         refetch();
       } catch (err) {
         toast.error(err?.data?.message || err.error);
       }
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      Swal.fire({
+        title: "Cancelled",
+        text: "User update cancelled.",
+        icon: "error"
+      });
+    }
+  };
+  
+
+  const deleteHandler = async (id,username) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You want to delete this user!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "No, cancel!",
+      reverseButtons: true
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await deleteUser(id);
+        await Swal.fire({
+          title: "Deleted!",
+          text: `${username} has been deleted.`,
+          icon: "success"
+        });
+        refetch();
+      } catch (err) {
+        toast.error(err?.data?.message || err.error);
+      }
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      Swal.fire({
+        title: "Cancelled",
+        text: "this User data is safe :)",
+        icon: "error"
+      });
     }
   };
 
@@ -147,15 +209,15 @@ const UserListV2 = () => {
                     class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                   >
                     {editableUserId === user._id && toggleUpdate
-                      ? "update"
-                      : "edit"}
+                      ? (<button className=" bg-green-400 rounded-md px-3 py-2 text-white">Update</button>)
+                      : (<FaEdit size={18}/>)}
                   </button>
                   <button
                     onClick={() => {
-                      deleteHandler(user._id);
+                      deleteHandler(user._id,user.username);
                     }}
                   >
-                    Delete
+                    <FaTrash className=" text-red-600 text-[16px]"/>
                   </button>
                 </td>
               </tr>

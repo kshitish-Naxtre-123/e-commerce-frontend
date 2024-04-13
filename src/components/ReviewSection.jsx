@@ -11,6 +11,7 @@ import {
   useDeleteProductReviewMutation,
   useUpdateProductReviewMutation,
 } from "../redux/api/productApiSlice";
+import avatar from "../assets/avatar.svg";
 
 const { TextArea } = Input;
 const ratingLabels = {
@@ -28,6 +29,8 @@ const ReviewSection = ({ product, productId, userInfo, reviewEvent }) => {
   const [rating, setRating] = useState();
   const [comment, setComment] = useState();
   const [editReview, setEditReview] = useState(null);
+  const [viewAll, setViewAll] = useState(true);
+  const [reviewCount, setReviewCount] = useState(4);
 
   // redux section
   const [createReview, { isLoading: loadingProductReview }] =
@@ -121,7 +124,9 @@ const ReviewSection = ({ product, productId, userInfo, reviewEvent }) => {
     <section>
       <div className="w-full px-10 border-l-2 border-r-2">
         <div className="flex items-center justify-between pb-4 border-b-2">
-          <h1 className="font-bold text-xl">Recent Reviews</h1>
+          <h1 className="font-bold text-xl">
+            Recent Reviews {`(${product?.reviews.length})`}
+          </h1>
           <button
             className="px-3 py-2 rounded-sm shadow-md border-2 font-semibold"
             onClick={() => setIsModalOpen(true)}
@@ -131,11 +136,15 @@ const ReviewSection = ({ product, productId, userInfo, reviewEvent }) => {
         </div>
         {product?.reviews.length > 0 ? (
           product?.reviews?.map((review, index) => {
-            if (index <= 5) {
+            if (index <= reviewCount) {
               return (
                 <div className="w-full flex flex-wrap py-10 border-b-2">
                   <div className="basis-2/6 flex flex-col gap-3">
-                    <span className="capitalize font-poppins">
+                    <span className="capitalize font-poppins flex gap-2 items-center">
+                      <img
+                        src={avatar}
+                        className=" text-white text-[20px] w-[30px] h-[30px]"
+                      />
                       {review.name}
                     </span>
                     <span className="text-gray-600">
@@ -175,8 +184,20 @@ const ReviewSection = ({ product, productId, userInfo, reviewEvent }) => {
             No reviews yet, add a review.
           </div>
         )}
-        {product?.reviews?.length >= 5 && (
-          <span className="text-blue-600 font-mono">View All</span>
+        {product?.reviews?.length >= reviewCount && (
+          <span
+            className="text-blue-600 font-mono cursor-pointer"
+            onClick={() => {
+              setViewAll((value) => !value);
+              if (viewAll) {
+                setReviewCount(product?.reviews.length);
+              } else {
+                setReviewCount(4);
+              }
+            }}
+          >
+            {viewAll ? "View All" : "View Less"}
+          </span>
         )}
       </div>
 
@@ -211,7 +232,7 @@ const ReviewSection = ({ product, productId, userInfo, reviewEvent }) => {
       >
         <TextArea
           rows={4}
-          placeholder="maxLength is 6"
+          placeholder="Write Your review :)"
           // maxLength={6}
           className="rounded-md text-black font-poppins text-[14px] "
           value={comment}

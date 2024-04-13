@@ -9,6 +9,7 @@ import { LiaHeart, LiaHeartSolid } from "react-icons/lia";
 import { PiShoppingCart } from "react-icons/pi";
 
 import ProductCard from "../../components/ProductCard";
+import Ratings from "./Ratings";
 import {
   useGetProductDetailsQuery,
   useCreateReviewMutation,
@@ -27,6 +28,7 @@ import {
 } from "../../Utils/localStotage";
 import ReviewSection from "../../components/ReviewSection";
 import { animateScroll as scroll } from "react-scroll";
+import Loader from "../../components/Loader";
 
 const ProductDetailsV2 = () => {
   const { id: productId } = useParams();
@@ -92,8 +94,10 @@ const ProductDetailsV2 = () => {
         smooth: "easeInOutQuart",
         offset: -100,
       });
-    }, 2000);
+    }, 1000);
   };
+
+  
 
   if (error) {
     return <p>{error.message}</p>;
@@ -114,12 +118,15 @@ const ProductDetailsV2 = () => {
             <div className="flex flex-col gap-3">
               <h1 className="font-extrabold text-4xl pr-20">{product?.name}</h1>
               <p className="text-gray-800 font-bold">Brand: {product?.brand}</p>
+              <Ratings value={product?.rating} />
             </div>
             <p className="font-normal font-sans text-gray-700">
               {product?.description}
             </p>
             <div className="flex flex-col gap-2">
-              <h3 className="font-bold text-2xl">₹ {product?.price}</h3>
+              <h3 className="font-bold text-2xl">
+                ₹ {product?.price.toLocaleString("en-IN")}
+              </h3>
               <div className="w-full flex justify-between flex-wrap">
                 <p className="text-gray-800 font-poppins">
                   In Stock: {product?.countInStock}
@@ -128,12 +135,9 @@ const ProductDetailsV2 = () => {
                   Rating: {product?.rating}
                 </p>
                 <p className="text-gray-800 font-poppins">
-                  Added: {moment(product?.createAt).fromNow()}
+                  Added: {moment(product?.createAt).format("Do MMM YYYY")}{" "}
                 </p>
               </div>
-              <p className="text-gray-800 font-poppins">
-                Reviews: {product?.numReviews}
-              </p>
             </div>
             <div className="flex items-center gap-3 ">
               <button
@@ -174,7 +178,10 @@ const ProductDetailsV2 = () => {
               <div className="grid md:grid-cols-4 grid-cols-3">
                 {recommendedProducts?.length ? (
                   recommendedProducts?.map((product) => (
-                    <ProductCard product={product} />
+                    <ProductCard
+                      product={product}
+                      navigate={(path) => handleNavigation(path)}
+                    />
                   ))
                 ) : (
                   <p className="text-semibold font-sans w-full">
@@ -185,6 +192,11 @@ const ProductDetailsV2 = () => {
             )}
           </div>
         </div>
+        {loadingNavigation && (
+        <div className="fixed top-0 left-0 z-50 w-full h-full flex items-center justify-center bg-gray-700 bg-opacity-40">
+          <Loader />
+        </div>
+      )}
       </section>
     </>
   );

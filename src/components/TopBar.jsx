@@ -75,13 +75,13 @@ const TopBar = () => {
           </h3>
           {userInfo &&
             (dropdownOpen ? (
-              <IoMdArrowDropdown
+              <IoMdArrowDropup
                 size={20}
                 className="ml-3 text-white"
                 onClick={toggleDropdown}
               />
             ) : (
-              <IoMdArrowDropup
+              <IoMdArrowDropdown
                 size={20}
                 className="ml-3 text-white"
                 onClick={toggleDropdown}

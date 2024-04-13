@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  FaRegStar,
   FaStar,
   FaStarHalfAlt
 } from 'react-icons/fa';
@@ -17,7 +16,7 @@ const Ratings = ({ value, text, color }) => {
 
   const emptyStarsArray = [];
   for (let i = 0; i < emptyStars; i++) {
-    emptyStarsArray.push(<FaRegStar key={i} className={`text-${color} ml-1`} size={20}/>);
+    emptyStarsArray.push(<FaStar key={i} className={` text-gray-400 ml-1`} size={20}/>);
   }
 
   return (

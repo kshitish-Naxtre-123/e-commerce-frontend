@@ -10,7 +10,7 @@ function AdminRoutes() {
       <Outlet/>
      )
     :(
-       <Navigate to="/login" replace/>
+       <Navigate to="/auth" replace/>
      )
   )
 }

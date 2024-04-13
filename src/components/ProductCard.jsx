@@ -2,8 +2,7 @@ import React from "react";
 import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
 
-const ProductCard = ({ product }) => {
-  const navigate = useNavigate();
+const ProductCard = ({ product,  navigate}) => {
 
   return (
     <div className="mb-10">

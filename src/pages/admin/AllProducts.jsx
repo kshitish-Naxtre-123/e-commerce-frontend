@@ -81,7 +81,7 @@ const AllProducts = () => {
                             />
                           </svg>
                         </Link>
-                        <p>$ {product?.price}</p>
+                        <p className=" font-poppins font-semibold"> ₹ {product?.price.toLocaleString("en-IN")}</p>
                       </div>
                     </div>
                   </div>

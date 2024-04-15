@@ -29,6 +29,7 @@ import {
 import ReviewSection from "../../components/ReviewSection";
 import { animateScroll as scroll } from "react-scroll";
 import Loader from "../../components/Loader";
+import ProductCardV3 from "../../components/ProductCardV3";
 
 const ProductDetailsV2 = () => {
   const { id: productId } = useParams();
@@ -96,8 +97,6 @@ const ProductDetailsV2 = () => {
       });
     }, 1000);
   };
-
-  
 
   if (error) {
     return <p>{error.message}</p>;
@@ -175,10 +174,10 @@ const ProductDetailsV2 = () => {
             {loadingRecommendedProducts ? (
               <p>Loading...</p>
             ) : (
-              <div className="grid md:grid-cols-4 grid-cols-3">
+              <div className="grid md:grid-cols-4 grid-cols-3 gap-5">
                 {recommendedProducts?.length ? (
                   recommendedProducts?.map((product) => (
-                    <ProductCard
+                    <ProductCardV3
                       product={product}
                       navigate={(path) => handleNavigation(path)}
                     />
@@ -193,10 +192,10 @@ const ProductDetailsV2 = () => {
           </div>
         </div>
         {loadingNavigation && (
-        <div className="fixed top-0 left-0 z-50 w-full h-full flex items-center justify-center bg-gray-700 bg-opacity-40">
-          <Loader />
-        </div>
-      )}
+          <div className="fixed top-0 left-0 z-50 w-full h-full flex items-center justify-center bg-gray-700 bg-opacity-40">
+            <Loader />
+          </div>
+        )}
       </section>
     </>
   );

@@ -24,7 +24,6 @@ const AdminDashboard = () => {
   const { data: salesDetail } = useGetTotalSalesByDateQuery();
   const { data: soldDetails } = useProductSoldByCategoryQuery();
   const { data: paymentStatus } = useGetPaymentStatusQuery();
-  console.log("payment status", paymentStatus);
 
   const [state, setState] = useState({
     options: {
@@ -78,16 +77,12 @@ const AdminDashboard = () => {
     options: {
       chart: {
         type: "donut",
-        width: "200",
       },
-      responsive: [{
-        breakpoint: 480,
-        options: {
-          legend: {
-            position: 'center'
-          }
-        }
-      }],
+      responsive: [
+        {
+          position: "center",
+        },
+      ],
       labels: [],
     },
     series: [],
@@ -146,13 +141,38 @@ const AdminDashboard = () => {
     series: [{ name: "Sales", data: [] }],
   });
 
+  // useEffect(() => {
+  //   if (salesDetail) {
+  //     const formattedSalesDate = salesDetail.map((item) => ({
+  //       x: moment(item._id).format('DD MMM'),
+  //       y: item.totalSales,
+  //     }));
+  //     console.log(salesDetail)
+
+  //     setLineChartState((prevState) => ({
+  //       ...prevState,
+  //       options: {
+  //         ...prevState.options,
+  //         xaxis: {
+  //           categories: formattedSalesDate.map((item) => item.x),
+  //         },
+  //       },
+
+  //       series: [
+  //         { name: "Sales", data: formattedSalesDate.map((item) => item.y) },
+  //       ],
+  //     }));
+  //   }
+  // }, [salesDetail]);
   useEffect(() => {
     if (salesDetail) {
-      const formattedSalesDate = salesDetail.map((item) => ({
-        x: moment(item._id).format('DD MMM'),
-        y: item.totalSales,
-      }));
-      console.log(salesDetail)
+      // Format and sort the sales data
+      const formattedSalesDate = salesDetail
+        .map((item) => ({
+          x: moment(item._id).format("DD MMM"),
+          y: item.totalSales,
+        }))
+        .sort((a, b) => moment(a.x, "DD MMM").diff(moment(b.x, "DD MMM")));
 
       setLineChartState((prevState) => ({
         ...prevState,
@@ -162,7 +182,6 @@ const AdminDashboard = () => {
             categories: formattedSalesDate.map((item) => item.x),
           },
         },
-
         series: [
           { name: "Sales", data: formattedSalesDate.map((item) => item.y) },
         ],
@@ -215,21 +234,20 @@ const AdminDashboard = () => {
 
   return (
     <>
-      <AdminMenu />
+      {/* <AdminMenu /> */}
 
       <section className="xl:ml-[4rem] md:ml-[0rem]">
-        <div className="w-[90%] flex gap-6 ml-[3rem] flex-wrap">
-          <div className="rounded-lg bg-green-200 p-5 w-[25rem] mt-5">
+        <div className="mx-auto w-full grid md:grid-cols-3 grid-cols-2 gap-5">
+          <div className="rounded-lg bg-green-200 p-5 mt-5">
             <div className="font-bold rounded-full w-[3rem] bg-green-400 text-center p-3">
               <span className=" text-black font-bold text-[18px]">₹</span>
             </div>
-
             <p className="mt-5 font-poppins font-semibold">Sales</p>
             <h1 className="text-xl font-bold">
               ₹ {isLoading ? <Loader /> : sales?.totalSales.toFixed(2)}
             </h1>
           </div>
-          <div className="rounded-lg bg-orange-200 p-5 w-[25rem] mt-5">
+          <div className="rounded-lg bg-orange-200 p-5 mt-5">
             <div className="font-bold rounded-full w-[3rem] bg-orange-400 items-center p-4">
               <FaUsers size={18} />
             </div>
@@ -239,7 +257,7 @@ const AdminDashboard = () => {
               {isLoading ? <Loader /> : customers?.length}
             </h1>
           </div>
-          <div className="rounded-lg bg-blue-200 p-5 w-[25rem] mt-5">
+          <div className="rounded-lg bg-blue-200 p-5 mt-5">
             <div className="font-bold rounded-full w-[3rem] bg-blue-400 text-center p-4">
               <MdSell size={18} />
             </div>
@@ -251,35 +269,33 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        <div className=" container md:w-[80%] w-[100%]">
+        <div className="container mx-auto md:w-[80%] sm:w-[100%] my-10">
           <Chart
             options={state.options}
             series={state.series}
             type="bar"
-            width="70%"
-          />
-      
-        </div>
-        <div className="mx-[10%] grid md:grid-cols-[2fr_1fr] grid-cols-1 h-[500px]">
-        <div className="">
-          <Chart
-            options={lineChartState.options}
-            series={lineChartState.series}
-            type="line"
             width="100%"
-            height="100%"
           />
         </div>
-        <div className="">
-          <Chart
-            options={pieChartState.options}
-            series={pieChartState.series}
-            type="donut"
-            width="100%"
-            height="100%"
-            
-          />
-        </div>
+        <div className="border-2 grid md:grid-cols-[2fr_1fr] grid-cols-1 h-[500px]">
+          <div className="">
+            <Chart
+              options={lineChartState.options}
+              series={lineChartState.series}
+              type="line"
+              width="100%"
+              height="100%"
+            />
+          </div>
+          <div className="my-auto">
+            <Chart
+              options={pieChartState.options}
+              series={pieChartState.series}
+              type="donut"
+              width="100%"
+            />
+            <p className="w-full text-center">Order Status</p>
+          </div>
         </div>
         <hr
           style={{ opacity: 4, height: "5px", width: "90%", margin: "auto" }}

@@ -93,7 +93,7 @@ const ProductCarcV2 = ({ product }) => {
         <div className="mt-2 mb-5 flex items-center justify-between">
           <p>
             <span className="text-3xl font-bold text-slate-900">
-              ₹ {product.price}
+              ₹ {product?.price.toLocaleString("en-IN")}
             </span>
             <span className="text-sm text-slate-900 line-through">
               {Math.ceil(product.price * 1.25)}

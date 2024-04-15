@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useLogoutMutation } from "../redux/api/usersApiSlice";
 import { logout } from "../redux/features/auth/authSlice";
 
-import { IoIosArrowUp,IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import avatar from "../assets/avatar.svg";
 
 const TopBar = () => {
@@ -51,7 +51,6 @@ const TopBar = () => {
     <nav className="z-50 w-full flex items-center justify-between fixed bg-gray-800 text-white px-10 py-7">
       <div className="">
         <h2>E-COMMERCE MANAGEMENT SYSTEM</h2>
-
       </div>
       <div className="flex items-center justify-center gap-10">
         <div className="flex gap-2 items-center">
@@ -76,13 +75,13 @@ const TopBar = () => {
             (dropdownOpen ? (
               <IoIosArrowUp
                 size={20}
-                className="ml-3 text-white "
+                className="ml-3 text-white cursor-pointer"
                 onClick={toggleDropdown}
               />
             ) : (
               <IoIosArrowDown
                 size={20}
-                className="ml-3 text-white"
+                className="ml-3 text-white cursor-pointer"
                 onClick={toggleDropdown}
               />
             ))}

@@ -79,14 +79,16 @@ const AdminDashboard = () => {
         type: "donut",
         width: "200",
       },
-      responsive: [{
-        breakpoint: 480,
-        options: {
-          legend: {
-            position: 'center'
-          }
-        }
-      }],
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            legend: {
+              position: "center",
+            },
+          },
+        },
+      ],
       labels: [],
     },
     series: [],
@@ -240,15 +242,14 @@ const AdminDashboard = () => {
 
   return (
     <>
-      <AdminMenu />
+      {/* <AdminMenu /> */}
 
       <section className="xl:ml-[4rem] md:ml-[0rem]">
-        <div className="w-[90%] flex gap-6 ml-[3rem] flex-wrap">
+        <div className="w-full grid md:grid-cols-3 grid-cols-2 gap-5">
           <div className="rounded-lg bg-green-200 p-5 w-[25rem] mt-5">
             <div className="font-bold rounded-full w-[3rem] bg-green-400 text-center p-3">
               <span className=" text-black font-bold text-[18px]">₹</span>
             </div>
-
             <p className="mt-5 font-poppins font-semibold">Sales</p>
             <h1 className="text-xl font-bold">
               ₹ {isLoading ? <Loader /> : sales?.totalSales.toFixed(2)}
@@ -283,28 +284,26 @@ const AdminDashboard = () => {
             type="bar"
             width="70%"
           />
-      
         </div>
         <div className="mx-[10%] grid md:grid-cols-[2fr_1fr] grid-cols-1 h-[500px]">
-        <div className="">
-          <Chart
-            options={lineChartState.options}
-            series={lineChartState.series}
-            type="line"
-            width="100%"
-            height="100%"
-          />
-        </div>
-        <div className="">
-          <Chart
-            options={pieChartState.options}
-            series={pieChartState.series}
-            type="donut"
-            width="100%"
-            height="100%"
-            
-          />
-        </div>
+          <div className="">
+            <Chart
+              options={lineChartState.options}
+              series={lineChartState.series}
+              type="line"
+              width="100%"
+              height="100%"
+            />
+          </div>
+          <div className="">
+            <Chart
+              options={pieChartState.options}
+              series={pieChartState.series}
+              type="donut"
+              width="100%"
+              height="100%"
+            />
+          </div>
         </div>
         <hr
           style={{ opacity: 4, height: "5px", width: "90%", margin: "auto" }}

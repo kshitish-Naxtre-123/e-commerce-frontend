@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { useGetOrdersQuery } from "../../redux/api/orderApiSlice";
 import AdminMenu from "./AdminMenu";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const OrderList = () => {
   const { data: orders, isLoading, error } = useGetOrdersQuery();
@@ -126,7 +127,11 @@ const OrderList = () => {
     },
   ];
   const handleRowClick = (record) => {
-    navigate(`/order/${record._id}`);
+    if (record?.user) {
+      navigate(`/order/${record._id}`);
+    } else {
+      toast.error("user was deleted");
+    }
   };
   return (
     <>

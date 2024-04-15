@@ -180,7 +180,13 @@ const UserListV2 = () => {
                     />
                   )}
                 </td>
-                <td class="px-6 py-4">{user.isadmin ? "admin" : "user"}</td>
+                <td class="px-6 py-4 font-bold ">
+                  {user.isadmin ? (
+                    <span className=" font-bold text-blue-500">Admin</span>
+                  ) : (
+                    "User"
+                  )}
+                </td>
                 <td class="px-6 py-4 flex gap-2 items-center justify-center">
                   <button
                     onClick={() => {

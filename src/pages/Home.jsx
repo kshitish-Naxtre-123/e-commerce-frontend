@@ -47,7 +47,7 @@ const BannerData = {
   title2: "Air Solo Bass",
   title3: "Winter Sale",
   title4:
-    "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eaque reiciendis",
+    "Beat the chill with hot deals! Winter Sale on Headphones Now On. Tune into Savings!",
   bgColor: "#f42c37",
 };
 

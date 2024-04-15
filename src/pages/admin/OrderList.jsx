@@ -135,40 +135,52 @@ const OrderList = () => {
   };
   return (
     <>
-      {isLoading ? (
-        <Loader />
-      ) : error ? (
-        <Message variant="danger">
-          {error?.data?.message || error.error}
-        </Message>
-      ) : (
-        <>
-          <AdminMenu />
-          <Table
-            columns={columns}
-            dataSource={orders}
-            rowKey={(record) => record._id}
-            onRow={(record) => ({
-              onClick: () => {
-                handleRowClick(record);
-              },
-            })}
-            style={{ margin: "0 45px 0 50px" }}
-            pagination={{
-              pageSize: 5,
-
-              showTotal: (total, range) =>
-                `${range[0]}-${range[1]} of ${total} items`,
-              style: {
-                marginBottom: "20px",
-                display: "flex",
-                justifyContent: "center",
-                marginTop: "20px",
-              },
+      <div style={{ position: "relative" }}>
+        {isLoading ? (
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              marginTop: "50px",
             }}
-          />
-        </>
-      )}
+          >
+            <Loader />
+          </div>
+        ) : error ? (
+          <Message variant="danger">
+            {error?.data?.message || error.error}
+          </Message>
+        ) : (
+          <>
+            <AdminMenu />
+            <Table
+              columns={columns}
+              dataSource={orders}
+              rowKey={(record) => record._id}
+              onRow={(record) => ({
+                onClick: () => {
+                  handleRowClick(record);
+                },
+              })}
+              style={{ margin: "0 45px 0 50px" }}
+              pagination={{
+                pageSize: 5,
+
+                showTotal: (total, range) =>
+                  `${range[0]}-${range[1]} of ${total} items`,
+                style: {
+                  marginBottom: "20px",
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop: "20px",
+                },
+              }}
+            />
+          </>
+        )}
+      </div>
     </>
   );
 };

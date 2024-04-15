@@ -24,7 +24,6 @@ const AdminDashboard = () => {
   const { data: salesDetail } = useGetTotalSalesByDateQuery();
   const { data: soldDetails } = useProductSoldByCategoryQuery();
   const { data: paymentStatus } = useGetPaymentStatusQuery();
-  console.log("payment status", paymentStatus);
 
   const [state, setState] = useState({
     options: {
@@ -146,14 +145,37 @@ const AdminDashboard = () => {
     series: [{ name: "Sales", data: [] }],
   });
 
+  // useEffect(() => {
+  //   if (salesDetail) {
+  //     const formattedSalesDate = salesDetail.map((item) => ({
+  //       x: moment(item._id).format('DD MMM'),
+  //       y: item.totalSales,
+  //     }));
+  //     console.log(salesDetail)
+
+  //     setLineChartState((prevState) => ({
+  //       ...prevState,
+  //       options: {
+  //         ...prevState.options,
+  //         xaxis: {
+  //           categories: formattedSalesDate.map((item) => item.x),
+  //         },
+  //       },
+
+  //       series: [
+  //         { name: "Sales", data: formattedSalesDate.map((item) => item.y) },
+  //       ],
+  //     }));
+  //   }
+  // }, [salesDetail]);
   useEffect(() => {
     if (salesDetail) {
+      // Format and sort the sales data
       const formattedSalesDate = salesDetail.map((item) => ({
         x: moment(item._id).format('DD MMM'),
         y: item.totalSales,
-      }));
-      console.log(salesDetail)
-
+      })).sort((a, b) => moment(a.x, 'DD MMM').diff(moment(b.x, 'DD MMM')));
+  
       setLineChartState((prevState) => ({
         ...prevState,
         options: {
@@ -162,7 +184,6 @@ const AdminDashboard = () => {
             categories: formattedSalesDate.map((item) => item.x),
           },
         },
-
         series: [
           { name: "Sales", data: formattedSalesDate.map((item) => item.y) },
         ],
@@ -192,6 +213,10 @@ const AdminDashboard = () => {
     }
   }, [soldDetails]);
 
+  
+  
+  
+  
   useEffect(() => {
     if (paymentStatus) {
       setPieChartState({

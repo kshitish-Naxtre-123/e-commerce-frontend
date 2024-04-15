@@ -31,7 +31,7 @@ const AllProducts = () => {
             <div className="ml-[2rem] text-xl font-bold h-12">
               All Products ({products.length})
             </div>
-            <div className="flex flex-wrap justify-around items-center">
+            <div className="flex flex-wrap justify-around items-center gap-2">
               {products.map((product) => (
                 <Link
                   key={product._id}
@@ -81,7 +81,10 @@ const AllProducts = () => {
                             />
                           </svg>
                         </Link>
-                        <p className=" font-poppins font-semibold"> ₹ {product?.price.toLocaleString("en-IN")}</p>
+                        <p className=" font-poppins font-semibold">
+                          {" "}
+                          ₹ {product?.price.toLocaleString("en-IN")}
+                        </p>
                       </div>
                     </div>
                   </div>

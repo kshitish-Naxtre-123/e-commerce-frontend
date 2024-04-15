@@ -48,7 +48,7 @@ const ProductDetailsV2 = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const favourites = useSelector((state) => state.favourites) || [];
 
-  const isFavourites = favourites.some((p) => p._id === product._id);
+  const isFavourites = favourites.some((p) => p._id === product?._id);
   const [reviewEvent, setReviewEvent] = useState(false);
   const [loadingNavigation, setLoadingNavigation] = useState(false);
 
@@ -66,7 +66,7 @@ const ProductDetailsV2 = () => {
     if (isFavourites) {
       dispatch(removeFromFavorites(product));
       //remove the product from the localstorage aswell
-      removeFavouriteFromLocalStorage(product._id);
+      removeFavouriteFromLocalStorage(product?._id);
     } else {
       dispatch(addToFavorites(product));
       //add product to localstorage as well

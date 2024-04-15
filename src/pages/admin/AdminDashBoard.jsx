@@ -77,16 +77,10 @@ const AdminDashboard = () => {
     options: {
       chart: {
         type: "donut",
-        width: "200",
       },
       responsive: [
         {
-          breakpoint: 480,
-          options: {
-            legend: {
-              position: "center",
-            },
-          },
+          position: "center",
         },
       ],
       labels: [],
@@ -173,11 +167,13 @@ const AdminDashboard = () => {
   useEffect(() => {
     if (salesDetail) {
       // Format and sort the sales data
-      const formattedSalesDate = salesDetail.map((item) => ({
-        x: moment(item._id).format('DD MMM'),
-        y: item.totalSales,
-      })).sort((a, b) => moment(a.x, 'DD MMM').diff(moment(b.x, 'DD MMM')));
-  
+      const formattedSalesDate = salesDetail
+        .map((item) => ({
+          x: moment(item._id).format("DD MMM"),
+          y: item.totalSales,
+        }))
+        .sort((a, b) => moment(a.x, "DD MMM").diff(moment(b.x, "DD MMM")));
+
       setLineChartState((prevState) => ({
         ...prevState,
         options: {
@@ -215,10 +211,6 @@ const AdminDashboard = () => {
     }
   }, [soldDetails]);
 
-  
-  
-  
-  
   useEffect(() => {
     if (paymentStatus) {
       setPieChartState({
@@ -245,8 +237,8 @@ const AdminDashboard = () => {
       {/* <AdminMenu /> */}
 
       <section className="xl:ml-[4rem] md:ml-[0rem]">
-        <div className="w-full grid md:grid-cols-3 grid-cols-2 gap-5">
-          <div className="rounded-lg bg-green-200 p-5 w-[25rem] mt-5">
+        <div className="mx-auto w-full grid md:grid-cols-3 grid-cols-2 gap-5">
+          <div className="rounded-lg bg-green-200 p-5 mt-5">
             <div className="font-bold rounded-full w-[3rem] bg-green-400 text-center p-3">
               <span className=" text-black font-bold text-[18px]">₹</span>
             </div>
@@ -255,7 +247,7 @@ const AdminDashboard = () => {
               ₹ {isLoading ? <Loader /> : sales?.totalSales.toFixed(2)}
             </h1>
           </div>
-          <div className="rounded-lg bg-orange-200 p-5 w-[25rem] mt-5">
+          <div className="rounded-lg bg-orange-200 p-5 mt-5">
             <div className="font-bold rounded-full w-[3rem] bg-orange-400 items-center p-4">
               <FaUsers size={18} />
             </div>
@@ -265,7 +257,7 @@ const AdminDashboard = () => {
               {isLoading ? <Loader /> : customers?.length}
             </h1>
           </div>
-          <div className="rounded-lg bg-blue-200 p-5 w-[25rem] mt-5">
+          <div className="rounded-lg bg-blue-200 p-5 mt-5">
             <div className="font-bold rounded-full w-[3rem] bg-blue-400 text-center p-4">
               <MdSell size={18} />
             </div>
@@ -277,15 +269,15 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        <div className=" container md:w-[80%] w-[100%]">
+        <div className="container mx-auto md:w-[80%] sm:w-[100%] my-10">
           <Chart
             options={state.options}
             series={state.series}
             type="bar"
-            width="70%"
+            width="100%"
           />
         </div>
-        <div className="mx-[10%] grid md:grid-cols-[2fr_1fr] grid-cols-1 h-[500px]">
+        <div className="border-2 grid md:grid-cols-[2fr_1fr] grid-cols-1 h-[500px]">
           <div className="">
             <Chart
               options={lineChartState.options}
@@ -295,14 +287,14 @@ const AdminDashboard = () => {
               height="100%"
             />
           </div>
-          <div className="">
+          <div className="my-auto">
             <Chart
               options={pieChartState.options}
               series={pieChartState.series}
               type="donut"
               width="100%"
-              height="100%"
             />
+            <p className="w-full text-center">Order Status</p>
           </div>
         </div>
         <hr

@@ -238,7 +238,7 @@ const AdminDashboard = () => {
 
       <section className="xl:ml-[4rem] md:ml-[0rem]">
         <div className="mx-auto w-full grid md:grid-cols-3 grid-cols-2 gap-5">
-          <div className="rounded-lg bg-green-200 p-5 mt-5">
+          <div className="rounded-lg bg-green-200 p-5 mt-5 lg:ml-2">
             <div className="font-bold rounded-full w-[3rem] bg-green-400 text-center p-3">
               <span className=" text-black font-bold text-[18px]">₹</span>
             </div>

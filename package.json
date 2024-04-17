@@ -22,6 +22,7 @@
     "aos": "^2.3.4",
     "apexcharts": "^3.45.0",
     "axios": "^1.6.2",
+    "dotenv": "^16.4.5",
     "flowbite": "^2.2.1",
     "flowbite-react": "^0.7.8",
     "mdb-react-ui-kit": "^7.2.0",

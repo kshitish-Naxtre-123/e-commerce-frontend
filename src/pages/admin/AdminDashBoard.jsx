@@ -130,40 +130,11 @@ const AdminDashboard = () => {
         },
         min: 0,
       },
-      // legend: {
-      //   position: "top",
-      //   horizontalAlign: "right",
-      //   floating: true,
-      //   offsetY: -25,
-      //   offsetX: -5,
-      // },
+      
     },
     series: [{ name: "Sales", data: [] }],
   });
 
-  // useEffect(() => {
-  //   if (salesDetail) {
-  //     const formattedSalesDate = salesDetail.map((item) => ({
-  //       x: moment(item._id).format('DD MMM'),
-  //       y: item.totalSales,
-  //     }));
-  //     console.log(salesDetail)
-
-  //     setLineChartState((prevState) => ({
-  //       ...prevState,
-  //       options: {
-  //         ...prevState.options,
-  //         xaxis: {
-  //           categories: formattedSalesDate.map((item) => item.x),
-  //         },
-  //       },
-
-  //       series: [
-  //         { name: "Sales", data: formattedSalesDate.map((item) => item.y) },
-  //       ],
-  //     }));
-  //   }
-  // }, [salesDetail]);
   useEffect(() => {
     if (salesDetail) {
       // Format and sort the sales data

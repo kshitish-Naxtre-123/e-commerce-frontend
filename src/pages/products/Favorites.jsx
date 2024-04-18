@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { selectFavoriteProduct } from "../../redux/features/favorites/favoriteSlice.js";
 import Product from "./Product.jsx";
+import favImage from "../../../public/assets/favourite_animation.gif"
 
 const Favourites = () => {
   const favourites = useSelector(selectFavoriteProduct);
@@ -21,7 +22,7 @@ const Favourites = () => {
         </>
       ) : (
         <div className="flex-1 w-full flex justify-center items-center">
-          <img src="public/assets/favourite_animation.gif" alt="image" />
+          <img src={favImage} alt="image" />
         </div>
       )}
     </div>

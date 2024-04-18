@@ -11,6 +11,7 @@ import {
 import Loader from "../../components/Loader.jsx";
 import AdminMenu from "./AdminMenu.jsx";
 import Swal from "sweetalert2";
+import { Switch } from "antd";
 
 const UserListV2 = () => {
   const { data: users, refetch, isLoading, error } = useGetUsersQuery();
@@ -181,11 +182,13 @@ const UserListV2 = () => {
                   )}
                 </td>
                 <td class="px-6 py-4 font-bold ">
-                  {user.isadmin ? (
-                    <span className=" font-bold text-blue-500">Admin</span>
-                  ) : (
-                    "User"
-                  )}
+                  <Switch
+                    checked={user.isadmin}
+                    disabled={!user.isadmin}
+                    style={{
+                      backgroundColor: user.isadmin ? "#32de84" : "red",
+                    }}
+                  />
                 </td>
                 <td class="px-6 py-4 flex gap-2 items-center justify-center">
                   <button

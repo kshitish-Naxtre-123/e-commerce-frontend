@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { FaTrash } from "react-icons/fa";
 import CartCardV2 from "../components/CartCardV2";
 import Swal from "sweetalert2";
+import cartImage from "../../public/assets/LottieAnimation.gif"
 
 const CartV2 = () => {
   const navigate = useNavigate();
@@ -66,7 +67,7 @@ const CartV2 = () => {
                 your cart is empty{" "}
               </div>
               <img
-                src="public/assets/LottieAnimation.gif"
+                src={cartImage}
                 alt="image"
                 height={250}
                 width={250}

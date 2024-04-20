@@ -7,6 +7,7 @@ import { logout } from "../redux/features/auth/authSlice";
 
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import avatar from "../assets/avatar.svg";
+// import logo from "../assets/logo.ico"
 
 const TopBar = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -51,6 +52,7 @@ const TopBar = () => {
     <nav className="z-50 w-full flex items-center justify-between fixed bg-gray-800 text-white px-10 py-7">
       <div className="">
         <h2>E-COMMERCE MANAGEMENT SYSTEM</h2>
+        {/* <img src={logo} alt="logo" width="60px" height="30px" className=" rounded-full" /> */}
       </div>
       <div className="flex items-center justify-center gap-10">
         <div className="flex gap-2 items-center">

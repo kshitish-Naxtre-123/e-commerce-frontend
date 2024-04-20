@@ -10,18 +10,34 @@ import { IoLocation } from "react-icons/io5";
 
 const FooterLinks = [
   {
-    title: "Home",
+    title: "Shipping Information",
   },
   {
-    title: "About",
+    title: "Return Policy",
   },
   {
-    title: "Contact",
+    title: "Contact Us",
   },
   {
-    title: "Product",
+    title: "FAQs",
   },
 ];
+
+const FooterLinks2 = [
+  {
+    title: "Shop",
+  },
+  {
+    title: "New Arrivals",
+  },
+  {
+    title: "Best Sellers",
+  },
+  {
+    title: "Gift Cards",
+  },
+];
+
 const Footer = () => {
   return (
     <>
@@ -57,7 +73,7 @@ const Footer = () => {
                     <li key={index}>
                       <a
                         href={data.link}
-                        className="text-gray-600 dark:text-gray-400 hover:dark:text-white hover:text-black duration-300 font-poppins font-[400]"
+                        className="text-gray-600 dark:text-gray-400 hover:dark:text-white hover:text-black duration-300 font-poppins font-[400] cursor-pointer"
                       >
                         {data.title}
                       </a>
@@ -71,9 +87,9 @@ const Footer = () => {
                   Quick Links
                 </h1>
                 <ul className="space-y-3">
-                  {FooterLinks.map((data, index) => (
+                  {FooterLinks2.map((data, index) => (
                     <li key={index}>
-                      <a className="text-gray-600 dark:text-gray-400 hover:dark:text-white hover:text-black duration-300 font-poppins font-[400]">
+                      <a className="text-gray-600 dark:text-gray-400 hover:dark:text-white hover:text-black duration-300 font-poppins font-[400] cursor-pointer">
                         {data.title}
                       </a>
                     </li>
@@ -87,22 +103,30 @@ const Footer = () => {
                 <div>
                   <div className="flex items-center gap-2 font-poppins">
                     <IoLocation className=" text-brandBlue" size={20} />
-                    <p className=" font-[400]">Rasulgarh,Bhubaneswar</p>
+                    <p className=" font-[400] cursor-pointer">
+                      Rasulgarh,Bhubaneswar
+                    </p>
                   </div>
                   <div className="flex items-center gap-2 mt-6 font-poppins">
                     <FaMobileAlt className=" text-black font-bold text-[16px]" />
-                    <p className=" font-[400]">+91 8456826181</p>
+                    <p className=" font-[400] cursor-pointer">+91 8456826181</p>
                   </div>
 
                   {/* social links */}
                   <div className="flex items-center gap-3 mt-6">
-                    <a href="https://www.instagram.com/invites/contact/?i=13u9jqy5gj939&utm_content=c6b75sx">
+                    <a
+                      href="https://www.instagram.com/invites/contact/?i=13u9jqy5gj939&utm_content=c6b75sx"
+                      target="_blank"
+                    >
                       <FaInstagram className="text-3xl text-white duration-300 bg-gradient-to-r from-yellow-400 via-pink-500 to-indigo-600 rounded-full p-2" />
                     </a>
-                    <a href="https://www.fb.com/l/6lp1kJRRR">
+                    <a href="https://www.fb.com/l/6lp1kJRRR" target="_blank">
                       <FaFacebook className="text-3xl text-[#1877F2] duration-200" />
                     </a>
-                    <a href="https://www.linkedin.com/in/kshitish-kumar-nayak-7205a6289?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app">
+                    <a
+                      href="https://www.linkedin.com/in/kshitish-kumar-nayak-7205a6289?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
+                      target="_blank"
+                    >
                       <FaLinkedin className="text-3xl text-[#1877F2] duration-200" />
                     </a>
                     <a
@@ -118,7 +142,11 @@ const Footer = () => {
           </div>
           <span class="block text-sm text-gray-500 sm:text-center dark:text-gray-400 mb-2">
             © 2024{" "}
-            <a href="https://flowbite.com/" class="hover:underline">
+            <a
+              href="https://github.com/kshitish-Naxtre-123"
+              target="_blank"
+              class="hover:underline"
+            >
               E-commerce management system™
             </a>
             . All Rights Reserved.

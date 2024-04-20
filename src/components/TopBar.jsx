@@ -89,7 +89,7 @@ const TopBar = () => {
         <div className="relative z-40 top-10" ref={dropdownRef}>
           {dropdownOpen && userInfo && (
             <ul
-              className={`absolute  bg-gray-800 right-0 mt-2 mr-25 space-y-1 bg-white-400 text-white font-bold border rounded-md px-3 py-3 ${
+              className={`absolute  bg-gray-800 right-0 mt-2 mr-25 space-y-1 bg-white-400 text-white font-bold border rounded-md px-5 py-3 ${
                 !userInfo.isadmin ? "-top-100" : "-top-180"
               } `}
             >
@@ -109,6 +109,15 @@ const TopBar = () => {
                       className="block px-4 py-2 rounded-md hover:text-[#35e5f1] hover:underline "
                     >
                       Products
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/admin/allproductslist"
+                      className="block px-4 py-2 rounded-md hover:text-[#35e5f1] hover:underline text-sm "
+                    >
+                      {" "}
+                      All Products
                     </Link>
                   </li>
                   <li>

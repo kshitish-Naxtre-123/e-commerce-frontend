@@ -115,22 +115,22 @@ const Footer = () => {
                   {/* social links */}
                   <div className="flex items-center gap-3 mt-6">
                     <a
-                      href="https://www.instagram.com/invites/contact/?i=13u9jqy5gj939&utm_content=c6b75sx"
+                      href="#"
                       target="_blank"
                     >
                       <FaInstagram className="text-3xl text-white duration-300 bg-gradient-to-r from-yellow-400 via-pink-500 to-indigo-600 rounded-full p-2" />
                     </a>
-                    <a href="https://www.fb.com/l/6lp1kJRRR" target="_blank">
+                    <a href="#">
                       <FaFacebook className="text-3xl text-[#1877F2] duration-200" />
                     </a>
                     <a
-                      href="https://www.linkedin.com/in/kshitish-kumar-nayak-7205a6289?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
+                      href="#"
                       target="_blank"
                     >
                       <FaLinkedin className="text-3xl text-[#1877F2] duration-200" />
                     </a>
                     <a
-                      href="https://youtube.com/@kkvlogs3379?si=uaajCiPrFLbOSF4t"
+                      href="#"
                       target="_blank"
                     >
                       <FaYoutube className=" text-3xl text-[#FF0000] duration-200" />
@@ -143,7 +143,7 @@ const Footer = () => {
           <span class="block text-sm text-gray-500 sm:text-center dark:text-gray-400 mb-2">
             © 2024{" "}
             <a
-              href="https://github.com/kshitish-Naxtre-123"
+              href="#"
               target="_blank"
               class="hover:underline"
             >

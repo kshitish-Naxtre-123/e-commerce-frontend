@@ -8,6 +8,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setCredentials } from "../../redux/features/auth/authSlice";
 import { toast } from "react-toastify";
+import SentResetCode from "./SentResetCode";
 
 const Auth = () => {
   const [isRegister, setIsRegister] = useState(false);
@@ -414,6 +415,16 @@ const Auth = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 class="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
               />
+              {!isRegister && (
+                <div>
+                  <Link
+                    to={"/sent-reset-code"}
+                    class="block text-sm font-medium text-blue-500 mt-1"
+                  >
+                    forget password !
+                  </Link>
+                  </div>
+              )}
             </div>
             {isRegister && (
               <div>

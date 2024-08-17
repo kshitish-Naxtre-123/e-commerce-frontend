@@ -56,6 +56,20 @@ export const userApiSlice= apiSlice.injectEndpoints({
                 body:data,
             }),
             invalidatesTags:["User"]
+        }),
+        requestPasswordReset:builder.mutation({
+            query:(data)=>({
+                url:`${USERS_URL}/auth/request-password-reset`,
+                method:"POST",
+                body:data,
+            })
+        }),
+        resetPassword:builder.mutation({
+            query:(data)=>({
+                url:`${USERS_URL}/auth/reset-password`,
+                method:"POST",
+                body:data,
+            }),
         })
        
     })
@@ -70,7 +84,9 @@ export const {
     useGetUsersQuery,
     useDeleteUserMutation,
     useGetUserDetailsQuery,
-    useUpdateUserMutation
+    useUpdateUserMutation,
+    useRequestPasswordResetMutation,
+    useResetPasswordMutation
 } = userApiSlice  /*useLoginMutation is dynamically destrucre by redux-toolkit
                                                   use isdefault, then login is endpoints name and it will converts to
                                                   capitalize at the time of destructure, then mutation also convert to
